@@ -1,0 +1,30 @@
+package com.martvalley.emi_trackon.login
+
+object Auth {
+
+    data class AuthResponse(
+        val address: String,
+        val author: Int,
+        val balance: String,
+        val created_at: String,
+        val email: String,
+        val email_verified_at: Any,
+        val gst: String,
+        val id: Int,
+        val image: String,
+        val name: String,
+        val owner_name: String,
+        val phone: String,
+        val role: Int,
+        val state: String,
+        val status: Int,
+        val updated_at: String,
+        val deleted_at: String,
+        val qr_id: String,
+        val message: String,
+        var wallpaper: String,
+        val sign: String,
+        val audio: String,
+    )
+
+}

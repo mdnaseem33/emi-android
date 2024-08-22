@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">EMI Trackon</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="spinner_title">Months of EMI</string>
+    <string name="no_data_found">No Records Found</string>
+    <string name="data_found">Recent Call logs</string>
+    <string name="recent_location">Recent locations</string>
+    <string name="agreement">Agreement</string>
+    <string name="good_morning">Good Morning</string>
+    <string name="banner_image">Banner Image</string>
+    <string name="smartkey">SmartKey</string>
+    <string name="superkey">SuperKey</string>
+    <string name="home_appliance">Home Appliance</string>
+    <string name="udhar">Udhar</string>
+</resources>
