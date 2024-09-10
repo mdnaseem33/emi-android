@@ -28,7 +28,7 @@
                 android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_image"
+                android:src="@drawable/person_phone_touch"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
 
@@ -39,12 +39,11 @@
                 android:layout_below="@+id/imageViewKey"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/amita"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/smartkey"
                 android:textColor="@color/white"
-                android:textSize="8sp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -70,7 +69,7 @@
                 android:layout_centerHorizontal="true"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_image"
+                android:src="@drawable/a_hand_holding_phone_in_the_style_of_a_cartoon"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
 
@@ -81,10 +80,9 @@
                 android:layout_below="@+id/imageSuperKey"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/amita"
                 android:text="@string/superkey"
                 android:textColor="@color/white"
-                android:textSize="8sp" />
+                android:textSize="10sp" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -101,7 +99,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp">
+            android:layout_marginVertical="10dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/homeApplKey"
@@ -110,7 +108,7 @@
                 android:layout_centerHorizontal="true"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_image"
+                android:src="@drawable/group_photo_of_home_appliances"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
 
@@ -120,10 +118,9 @@
                 android:layout_below="@+id/homeApplKey"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/amita"
                 android:text="@string/home_appliance"
                 android:textColor="@color/white"
-                android:textSize="8sp" />
+                android:textSize="10sp"/>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -134,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_weight="1"
-        app:cardBackgroundColor="#AD4BBD"
+        app:cardBackgroundColor="@color/blue"
         app:cardCornerRadius="15dp">
 
         <RelativeLayout
@@ -149,7 +146,7 @@
                 android:layout_centerHorizontal="true"
                 android:elevation="15dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/no_image"
+                android:src="@drawable/apply_loan_img"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
 
@@ -158,11 +155,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/udharKey"
                 android:layout_marginTop="5dp"
-                android:fontFamily="@font/amita"
                 android:layout_centerHorizontal="true"
                 android:text="@string/udhar"
                 android:textColor="@color/white"
-                android:textSize="8sp" />
+                android:textSize="10sp"/>
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

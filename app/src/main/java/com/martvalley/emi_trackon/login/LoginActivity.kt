@@ -5,10 +5,19 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.martvalley.emi_trackon.api.RetrofitInstance
-import com.martvalley.emi_trackon.dashboard.DashboardActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.martvalley.emi_trackon.databinding.ActivityLoginBinding
 import com.martvalley.emi_trackon.forgot_pass.ForgotPasswordActivity
-import com.martvalley.emi_trackon.utils.*
+import com.martvalley.emi_trackon.utils.Constants
+import com.martvalley.emi_trackon.utils.SharedPref
+import com.martvalley.emi_trackon.utils.hide
+import com.martvalley.emi_trackon.utils.invisible
+import com.martvalley.emi_trackon.utils.isEmailValid
+import com.martvalley.emi_trackon.utils.isPhoneValid
+import com.martvalley.emi_trackon.utils.show
+import com.martvalley.emi_trackon.utils.showApiErrorToast
+import com.martvalley.emi_trackon.utils.showToast
+import com.martvalley.emi_trackon.utils.withNetwork
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -88,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                             SharedPref(this@LoginActivity).save(Constants.ROLE, role)
                             SharedPref(this@LoginActivity).save(Constants.EMAIL, email)
 
-                            val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                            val intent = Intent(this@LoginActivity, DashBoardNewActivity::class.java)
                             startActivity(intent)
 
 //                            if (selected == Constants.RETAILER) {

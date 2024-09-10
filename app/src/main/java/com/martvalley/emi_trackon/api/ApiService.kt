@@ -3,6 +3,7 @@ package com.martvalley.emi_trackon.api
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.people.retailer.Retailer
 import com.martvalley.emi_trackon.dashboard.people.user.User
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKey
 import com.martvalley.emi_trackon.dashboard.settings.Settings
 import com.martvalley.emi_trackon.dashboard.settings.controls.Control
 import com.martvalley.emi_trackon.dashboard.settings.controls.device.DeviceBasics
@@ -10,7 +11,12 @@ import com.martvalley.emi_trackon.forgot_pass.ForgotPass
 import com.martvalley.emi_trackon.login.Auth
 import com.martvalley.emi_trackon.login.Login
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -31,6 +37,10 @@ interface ApiService {
     @Headers("Accept: application/json")
     @GET("api/distributors/dashboard")
     fun getDistributorDashboardApi(): Call<Dashboard.DistributorResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/superkey/create")
+    fun createSmartKey(@Body smartKey: SmartKey): Call<Dashboard.CreateUserResponse>
 
     //<!------------------------------- people list --------------------------->
 

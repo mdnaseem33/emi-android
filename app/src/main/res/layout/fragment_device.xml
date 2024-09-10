@@ -201,6 +201,8 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:background="@drawable/home_bg"
             android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/surrenderbtn"
             app:layout_constraintEnd_toEndOf="parent"
@@ -208,6 +210,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout2"
             app:spanCount="2" />
+
+        <include
+            android:id="@+id/basicLayout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            layout="@layout/basic_layout"
+            android:layout_marginHorizontal="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/surrenderbtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout2"/>
 
 
         <ImageView
@@ -232,21 +246,23 @@
             app:layout_constraintEnd_toEndOf="@+id/photo_view"
             app:layout_constraintTop_toTopOf="@+id/photo_view" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/surrenderbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            android:backgroundTint="@color/red"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/radius_red_border"
             android:fontFamily="@font/roboto_bold"
-            android:text="Surrender"
+            android:text="@string/remove_key"
             android:textAllCaps="false"
+            android:textColor="@color/red"
             android:visibility="visible"
             app:cornerRadius="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/basicLayout" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

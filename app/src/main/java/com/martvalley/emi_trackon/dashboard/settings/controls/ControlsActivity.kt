@@ -84,9 +84,4 @@ class ControlsActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-
-    override fun onBackPressed() {
-//        super.onBackPressed()
-        finish()
-    }
 }

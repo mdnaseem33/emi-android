@@ -5,11 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.WindowManager
 import androidx.core.os.postDelayed
 import com.martvalley.emi_trackon.R
-import com.martvalley.emi_trackon.dashboard.DashBoardNewActivity
 import com.martvalley.emi_trackon.dashboard.DashboardActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.martvalley.emi_trackon.login.LoginActivity
 import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.SharedPref

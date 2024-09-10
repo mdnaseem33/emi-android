@@ -12,25 +12,11 @@
         android:layout_marginEnd="@dimen/_10sdp"
         android:backgroundTint="@color/blue"
         android:fontFamily="@font/roboto_bold"
-        android:text="View Agreement"
+        android:text="@string/download"
         android:textAllCaps="false"
         app:cornerRadius="@dimen/_5sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/download_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:backgroundTint="@color/blue"
-        android:fontFamily="@font/roboto_bold"
-        android:text="View aggrement"
-        android:visibility="invisible"
-        android:textAllCaps="false"
-        app:cornerRadius="@dimen/_5sdp"
-        app:layout_constraintEnd_toStartOf="@id/credit_btn"
-        app:layout_constraintTop_toTopOf="@id/credit_btn" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scollview"

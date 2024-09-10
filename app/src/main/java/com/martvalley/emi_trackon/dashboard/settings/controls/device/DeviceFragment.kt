@@ -70,6 +70,7 @@ class DeviceFragment : Fragment() {
        // initListener();
 
 
+        binding.rv
         return binding.root
     }
 
@@ -560,7 +561,7 @@ class DeviceFragment : Fragment() {
 
 
 
-            date.text = data.created_at.convertISOTimeToDate()
+            binding.userDetail.syncValueTv.text = data.created_at.convertISOTimeToDate()
             if (gotTheRefreshedDate) {
                 syncValueTv.text = getCurrentDate()
             } else {

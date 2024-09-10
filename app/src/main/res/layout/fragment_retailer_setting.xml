@@ -5,11 +5,23 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
+    android:backgroundTint="@color/grey"
     tools:context=".dashboard.settings.SettingFragment">
 
     <include
         android:id="@+id/report"
-        layout="@layout/setting_item" />
+        layout="@layout/setting_topbar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_white_fifteen"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:paddingBottom="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp">
 
     <include
         android:id="@+id/msg"
@@ -43,7 +55,7 @@
     <include
         android:id="@+id/logout"
         layout="@layout/setting_item" />
-
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,7 +63,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_20sdp"
         android:fontFamily="@font/roboto_medium"
-        android:text="Helpdesk Support"
+        android:text="@string/helpdesk_support"
         android:textColor="@color/black"
         android:textSize="@dimen/_12sdp" />
 
@@ -70,7 +82,7 @@
         android:autoLink="phone"
         android:fontFamily="@font/roboto_medium"
         android:linksClickable="true"
-        android:text="022-69646511"
+        android:text="@string/_022_69646511"
         android:textColor="@color/light_blue"
         android:textColorLink="@color/light_blue"
         android:textSize="@dimen/_12sdp" />
@@ -80,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/roboto_medium"
-        android:text="24*7 (All Days)"
+        android:text="@string/_24_7_all_days"
         android:textColor="@color/black"
         android:textSize="@dimen/_10sdp" />
 

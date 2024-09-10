@@ -40,7 +40,7 @@ class AggrementFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-       // loadAgreement()
+        loadAgreement()
         return binding.root
     }
 

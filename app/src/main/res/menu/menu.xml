@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
-        android:id="@+id/people"
-        android:icon="@drawable/group"
-        android:title="People" />
+        android:id="@+id/userListFragment"
+        android:icon="@drawable/user_icon"
+        android:title="@string/people" />
     <item
-        android:id="@+id/qr"
-        android:icon="@drawable/qr_code"
-        android:title="Scan qr" />
+        android:id="@+id/statisticsFragment"
+        android:icon="@drawable/statistics_icon"
+        android:title="@string/statistics" />
     <item
-        android:id="@+id/setting"
+        android:id="@+id/retailerSettingFragment2"
         android:icon="@drawable/settings"
-        android:title="Setting" />
+        android:title="@string/setting" />
 </menu>

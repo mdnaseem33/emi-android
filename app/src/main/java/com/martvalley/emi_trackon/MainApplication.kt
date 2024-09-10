@@ -5,7 +5,7 @@ import android.content.Context
 import com.martvalley.emi_trackon.login.Auth
 import dagger.hilt.android.HiltAndroidApp
 
-
+@HiltAndroidApp
 class MainApplication : Application() {
 
     override fun onCreate() {

@@ -28,7 +28,7 @@ class RetailerSettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.report.img.setImageResource(R.drawable.report)
+       // binding.report.img.setImageResource(R.drawable.report)
         binding.msg.img.setImageResource(R.drawable.lock_messages)
         binding.wallpaper.img.setImageResource(R.drawable.wallpaper_customize)
         binding.password.img.setImageResource(R.drawable.change_password)
@@ -37,7 +37,7 @@ class RetailerSettingFragment : Fragment() {
         binding.support.img.setImageResource(R.drawable.live_support_img)
         //binding.audio.img.setImageResource(R.drawable.baseline_audio_file_24)
 
-        binding.report.tv.text = "Report"
+      //  binding.report.tv.text = "Report"
         binding.msg.tv.text = "Lock Message"
         binding.wallpaper.tv.text = "Wallpaper Customize"
         binding.password.tv.text = "Change Password"
@@ -51,9 +51,9 @@ class RetailerSettingFragment : Fragment() {
             context?.let { it1 -> openWhatsAppConversationUsingUri(it1, "+912269646511", "") }
         }
 
-        binding.report.root.setOnClickListener {
-            startActivity(Intent(requireContext(), ReportActivity::class.java))
-        }
+//        binding.report.root.setOnClickListener {
+//            startActivity(Intent(requireContext(), ReportActivity::class.java))
+//        }
         binding.msg.root.setOnClickListener {
             startActivity(Intent(requireContext(), LockMessageActivity::class.java))
         }
