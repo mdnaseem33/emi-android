@@ -15,7 +15,9 @@ import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.adapter.HomePagerAdapter
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
+import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.KeyMainActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.SmartKey
 import com.martvalley.emi_trackon.databinding.FragmentHomeBinding
 import com.martvalley.emi_trackon.utils.hide
 import com.martvalley.emi_trackon.utils.show
@@ -64,19 +66,22 @@ class HomeFragment : Fragment() {
         withNetwork { callDashboardApi() }
 
         keyLayout.smartKeyCard.setOnClickListener {
-            val intent = Intent(requireContext(), KeyMainActivity::class.java)
-            intent.putExtra("Value_Key", "Smart Key")
+            val intent = Intent(requireContext(), SmartKey::class.java)
+            intent.putExtra("title", "Smart Key")
+            intent.putExtra("sub_title", "Mobile FRP Protection")
             startActivity(intent)
         }
         keyLayout.superKeyCard.setOnClickListener {
-            val intent = Intent(requireContext(), KeyMainActivity::class.java)
-            intent.putExtra("Value_Key", "Super Key")
+            val intent = Intent(requireContext(), SmartKey::class.java)
+            intent.putExtra("title", "Super Key")
+            intent.putExtra("sub_title", "Zero Touch Enrollment")
             startActivity(intent)
         }
 
         keyLayout.homeAppCard.setOnClickListener {
-            val intent = Intent(requireContext(), KeyMainActivity::class.java)
-            intent.putExtra("Value_Key", "Home Appliance")
+            val intent = Intent(requireContext(), SmartKey::class.java)
+            intent.putExtra("title", "Home Appliance")
+            intent.putExtra("sub_title", "Install without reset device")
             startActivity(intent)
         }
 
@@ -84,6 +89,10 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), KeyMainActivity::class.java)
             intent.putExtra("Value_Key", "Udhar")
             startActivity(intent)
+        }
+
+        binding.explore.todayActivation.setOnClickListener {
+
         }
 
         return binding.root

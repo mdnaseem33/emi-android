@@ -64,7 +64,20 @@ class AddCustomerStep1Fragment : Fragment(), ImageAnalysis.Analyzer {
 
         val type = activity?.intent?.getStringExtra("Value_Key")
         binding.keyName.text = type
-
+        when(type){
+            "Smart Key" -> {
+                binding.keyDes.text = "Mobile FRP Protection"
+            }
+            "Super Key" -> {
+                binding.keyDes.text = "Zero Touch Enrollment"
+            }
+            "Home Appliance" -> {
+                binding.keyDes.text = "Install without reset device"
+            }
+            "Udhar" ->{
+                binding.keyDes.text = ""
+            }
+        }
 
         binding.backTextView.setOnClickListener {
             activity?.finish()

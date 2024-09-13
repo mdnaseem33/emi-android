@@ -3,6 +3,8 @@ package com.martvalley.emi_trackon.api
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.people.retailer.Retailer
 import com.martvalley.emi_trackon.dashboard.people.user.User
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.RequestSmartKey
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKey
 import com.martvalley.emi_trackon.dashboard.settings.Settings
 import com.martvalley.emi_trackon.dashboard.settings.controls.Control
@@ -41,6 +43,22 @@ interface ApiService {
     @Headers("Accept: application/json")
     @POST("api/customer/superkey/create")
     fun createSmartKey(@Body smartKey: SmartKey): Call<Dashboard.CreateUserResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/smartkey/create")
+    fun registerSmartKey(@Body smartKey: RequestSmartKey): Call<Dashboard.CreateUserResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/superkey/create")
+    fun registerSuperKey(@Body smartKey: RequestSmartKey): Call<Dashboard.CreateUserResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/homekey/create")
+    fun registerHomeKey(@Body smartKey: RequestSmartKey): Call<Dashboard.CreateUserResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/udharkey/create")
+    fun registerUdharKey(@Body smartKey: RequestSmartKey): Call<Dashboard.CreateUserResponse>
 
     //<!------------------------------- people list --------------------------->
 
@@ -267,5 +285,8 @@ interface ApiService {
         @Query("customerId") customerId: String,
     ): Call<Control.SurrenderResponse>
 
+    @Headers("Accept: application/json")
+    @GET("api/customer/get/create")
+    fun getCustomerCreateData(): Call<CreateCustomerData>
 
 }

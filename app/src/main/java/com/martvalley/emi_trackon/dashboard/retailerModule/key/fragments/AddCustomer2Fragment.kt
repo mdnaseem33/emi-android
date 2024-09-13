@@ -6,15 +6,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.martvalley.emi_trackon.R
+import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.retailerModule.RetailerViewModel
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
 import com.martvalley.emi_trackon.databinding.FragmentAddCustomer2Binding
+import com.martvalley.emi_trackon.utils.withNetwork
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.DEBUG_PROPERTY_NAME
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @AndroidEntryPoint
 class AddCustomer2Fragment : Fragment() {
@@ -22,7 +31,7 @@ class AddCustomer2Fragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: RetailerViewModel by activityViewModels()
-
+    private var createCustomerData: CreateCustomerData? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,8 +74,31 @@ class AddCustomer2Fragment : Fragment() {
                 binding.referenceMobileEditText.visibility = View.GONE
             }
         }
-
+        withNetwork { getCreateData() }
         return binding.root
+    }
+
+
+
+
+    private fun getCreateData(){
+        val call = RetrofitInstance.apiService.getCustomerCreateData()
+        call.enqueue(object : Callback<CreateCustomerData> {
+            override fun onResponse(
+                p0: Call<CreateCustomerData>,
+                p1: Response<CreateCustomerData>
+            ) {
+                createCustomerData = p1.body()
+                val brands: List<Brand> = createCustomerData!!.brands
+                val brandNames = brands.map { it.name }
+                val adapter = ArrayAdapter(requireContext(), R.layout.spinner_layout, brandNames)
+            }
+
+            override fun onFailure(p0: Call<CreateCustomerData>, p1: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun validate(): Boolean {
