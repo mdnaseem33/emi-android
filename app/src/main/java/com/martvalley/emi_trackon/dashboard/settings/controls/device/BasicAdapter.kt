@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -42,37 +43,250 @@ class BasicAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Control.DeviceActionOld) {
+            when(data.sm){
+                "lock" -> {
+                    binding.tv.setImageResource(R.drawable.mobile_lock)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "Locked"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "Unlocked"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "od" -> {
+                    binding.tv.setImageResource(R.drawable.call_lock)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "ip" -> {
+                    binding.tv.setImageResource(R.drawable.app_install)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "sbd" -> {
+                    binding.tv.setImageResource(R.drawable.status_bar)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "uip" -> {
+                    binding.tv.setImageResource(R.drawable.app_uninstall)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "avd" -> {
+                    binding.tv.setImageResource(R.drawable.volume_lock)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "audio" -> {
+                    binding.tv.setImageResource(R.drawable.audio_rem)
+                    binding.currentState.visibility = View.GONE
+                }
+                "swd" -> {
+                    binding.tv.setImageResource(R.drawable.wallpaper_change)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "sms" -> {
+                    binding.tv.setImageResource(R.drawable.sms_lock)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "brl" -> {
+                    binding.tv.setImageResource(R.drawable.britness_lock)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "location" -> {
+                    binding.tv.setImageResource(R.drawable.location)
+                    binding.currentState.visibility = View.GONE
+                }
+                "mobile_no" -> {
+                    binding.tv.setImageResource(R.drawable.mobile_no)
+                    binding.currentState.visibility = View.GONE
+                }
+                "call_list" -> {
+                    binding.tv.setImageResource(R.drawable.call_log)
+                    binding.currentState.visibility = View.GONE
+                }
+                "uftd" ->{
+                    binding.tv.setImageResource(R.drawable.data_transfer)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "sr" ->{
+                    binding.tv.setImageResource(R.drawable.soft_reset)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "whatsapp" -> {
+                    binding.tv.setImageResource(R.drawable.whatsapp_hide)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "whatsapp_buss" -> {
+                    binding.tv.setImageResource(R.drawable.hide_whatsapp_buss)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "fb" -> {
+                    binding.tv.setImageResource(R.drawable.facebook_hide)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "insta" -> {
+                    binding.tv.setImageResource(R.drawable.hide_insta)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "twitter" -> {
+                    binding.tv.setImageResource(R.drawable.hide_twitter)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "thread" -> {
+                    binding.tv.setImageResource(R.drawable.hide_thread)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "youtube" -> {
+                    binding.tv.setImageResource(R.drawable.hide_youtube)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "fr" -> {
+                    binding.tv.setImageResource(R.drawable.hard_reset)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
+                "debug" -> {
+                    binding.tv.setImageResource(R.drawable.disable_debug)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (data.value){
+                        binding.currentState.text = "OFF"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "ON"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
+                }
 
-            binding.tv.text = data.display
-
-            if ((context as ControlsActivity).selectedList == "list1") {
-                if (data.value) {
-                    binding.tv.backgroundTintList =
-                        ColorStateList.valueOf(context.getColor(R.color.green))
-                    binding.tv.setTextColor(context.getColor(R.color.white))
-                } else {
-                    binding.tv.backgroundTintList = null
-                    binding.tv.setTextColor(context.getColor(R.color.blue))
+                else -> {
+                    binding.tv.setImageResource(R.drawable.baseline_cancel_24)
                 }
             }
+            binding.tvText.text = data.display
 
-            if (data.display == "Audio" || data.display == "Location" ||
-                data.display == "Call List" || data.display == "Mobile No.") {
-                binding.tv.backgroundTintList = null
-                binding.tv.setTextColor(context.getColor(R.color.blue))
-            }
-
-            if (data.sm == "ip" || data.sm == "uip" || data.sm == "fr" || data.sm == "uftd" ){
-                if (data.value){
-                    binding.tv.backgroundTintList = null
-                    binding.tv.setTextColor(context.getColor(R.color.blue))
-                } else {
-                    binding.tv.backgroundTintList =
-                        ColorStateList.valueOf(context.getColor(R.color.green))
-                    binding.tv.setTextColor(context.getColor(R.color.white))
-                }
-
-            }
 
             itemView.setOnClickListener {
                 data.value = !data.value
@@ -87,17 +301,6 @@ class BasicAdapter(
                     Log.d("ListnerTrueFA", data.toString())
                 }
 
-
-//                if (data.value) {
-//                    Log.d("ListnerTrueFA",data.value.toString())
-//                    binding.tv.backgroundTintList =
-//                        ColorStateList.valueOf(context.getColor(R.color.green))
-//                    binding.tv.setTextColor(context.getColor(R.color.white))
-//                } else {
-//                    binding.tv.backgroundTintList = null
-//                    binding.tv.setTextColor(context.getColor(R.color.blue))
-//                }
-                // isClicked =! isClicked
 
             }
         }

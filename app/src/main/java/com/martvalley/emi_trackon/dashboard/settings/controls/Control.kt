@@ -19,7 +19,15 @@ object Control {
         val uip: DeviceActionNew,
         val sms: DeviceActionNew,
         val lock: DeviceActionNew,
-        val kgd: DeviceActionNew,
+        val whatsapp: DeviceActionNew,
+        val fb: DeviceActionNew,
+        val insta: DeviceActionNew,
+        val youtube: DeviceActionNew,
+        val whatsapp_buss: DeviceActionNew,
+        val debug: DeviceActionNew,
+        val twitter: DeviceActionNew,
+        val thread: DeviceActionNew,
+        val brl: DeviceActionNew
     )
 
     data class Customer(
@@ -51,7 +59,8 @@ object Control {
         val sim2_number: String?,
         val status: Int,
         val updated_at: String,
-        val action: Any
+        val action: Any,
+        val is_set_wallpaper: String
     )
 
 
@@ -117,7 +126,16 @@ object Control {
         val uftd: DeviceActionNew,
         val uip: DeviceActionNew,
         val sms: DeviceActionNew,
-        val lock: DeviceActionNew
+        val lock: DeviceActionNew,
+        val whatsapp: DeviceActionNew,
+        val fb: DeviceActionNew,
+        val insta: DeviceActionNew,
+        val youtube: DeviceActionNew,
+        val whatsapp_buss: DeviceActionNew,
+        val debug: DeviceActionNew,
+        val twitter: DeviceActionNew,
+        val thread: DeviceActionNew,
+        val brl: DeviceActionNew
     )
 
     data class ActionUpdateResponse(

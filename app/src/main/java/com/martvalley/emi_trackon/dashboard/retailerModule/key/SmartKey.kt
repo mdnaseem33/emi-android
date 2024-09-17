@@ -65,10 +65,12 @@ import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.RequestSmartKey
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKey
+import com.martvalley.emi_trackon.dashboard.settings.Settings
 import com.martvalley.emi_trackon.databinding.ActivitySmartKeyBinding
 import com.martvalley.emi_trackon.utils.FileUtils
 import com.martvalley.emi_trackon.utils.getBase64String
 import com.martvalley.emi_trackon.utils.hide
+import com.martvalley.emi_trackon.utils.loadImage
 import com.martvalley.emi_trackon.utils.logd
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
@@ -110,6 +112,12 @@ class SmartKey : AppCompatActivity() {
     private var reference_id_back: String? = null
     private var selected_image_id: String? = null
     private var signatureImage: Boolean = false
+    private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let { uri ->
+            processImages(uri)
+            selected_image_id = null
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -222,54 +230,8 @@ class SmartKey : AppCompatActivity() {
     }
 
     private fun showChooseImageSourceDialog() {
-        // Open gallery to choose image
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY)
+        pickImage.launch("image/*")
         return;
-        val dialogView = layoutInflater.inflate(R.layout.dialog_choose_image_source, null)
-        val dialogBuilder = android.app.AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setTitle("Choose Image Source")
-
-        val alertDialog = dialogBuilder.create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog.show()
-
-        dialogView.findViewById<Button>(R.id.btn_gallery).setOnClickListener {
-            // Open gallery to choose image
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY)
-            alertDialog.dismiss()
-        }
-
-        dialogView.findViewById<Button>(R.id.btn_camera).setOnClickListener {
-            // Open camera to take picture
-            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                // Ensure there's a camera activity to handle the intent
-                takePictureIntent.resolveActivity(packageManager)?.also {
-                    // Create the File where the photo should go
-                    val photoFile: File? = try {
-                        createImageFile()
-                    } catch (ex: IOException) {
-                        // Error occurred while creating the File
-                        null
-                    }
-                    // Continue only if the File was successfully created
-                    photoFile?.also {
-                        val photoURI: Uri = FileProvider.getUriForFile(
-                            this,
-                            "com.martvalley.emi_trackon.fileprovider",
-                            it
-                        )
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(takePictureIntent, TAKE_PICTURE)
-                    }
-                }
-            }
-            alertDialog.dismiss()
-        }
     }
 
     fun compressImageFromUriAndGetBase64( imageUri: Uri, callback: (String?) -> Unit) {
@@ -347,35 +309,6 @@ class SmartKey : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                PICK_IMAGE_FROM_GALLERY -> {
-                    // Handle image picked from gallery
-                    val selectedImageUri = data?.data
-                    // Do something with the selected image URI
-                    processImages(selectedImageUri)
-                }
-                TAKE_PICTURE -> {
-                    // Handle picture taken from camera.get("data")
-                    val file = File(currentPhotoPath)
-                    val selectedImageUri = Uri.fromFile(file)
-
-                    // Do something with the selected image URI
-                    processImages(selectedImageUri)
-
-                }
-                10 -> {
-                    if (bitmap != null) {
-                    }
-                }
-            }
-        }
-        selected_image_id = null
-    }
-
     private fun openDatePicker() {
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_MONTH, 7)
@@ -394,21 +327,6 @@ class SmartKey : AppCompatActivity() {
 
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show()
-    }
-
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-
-        }
     }
 
     private fun setUpSpinners() {

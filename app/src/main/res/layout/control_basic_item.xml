@@ -8,15 +8,15 @@
 
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/currentState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/green"
         android:padding="5dp"
-        android:text="@string/unlocked"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        android:textSize="10sp"
+        android:textSize="7sp"
         android:elevation="15dp"
         android:layout_marginBottom="-10dp"
         app:layout_constraintBottom_toTopOf="@+id/tv"
@@ -24,10 +24,10 @@
         app:layout_constraintStart_toStartOf="@+id/tv"
         tools:ignore="SmallSp" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_weight="1"
         android:background="@drawable/text_key_radius_grey"
         android:fontFamily="@font/roboto_bold"
@@ -46,5 +46,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5" />
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:gravity="center"
+        android:text="@string/wallpaper"
+        android:textAllCaps="false"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/_9sdp"
+        app:layout_constraintTop_toBottomOf="@id/tv"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

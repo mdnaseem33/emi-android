@@ -190,7 +190,7 @@ class UserViewActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-//        super.onBackPressed()
+        super.onBackPressed()
         setResult(RESULT_OK, Intent().putExtra("statuschanged", statuschanged))
         finish()
     }

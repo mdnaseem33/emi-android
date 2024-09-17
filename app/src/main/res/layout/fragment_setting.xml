@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/roboto_medium"
-        android:text="022-69646511"
+        android:text="011-69290609"
         android:linksClickable="true"
         android:autoLink="phone"
         android:textColorLink="@color/light_blue"

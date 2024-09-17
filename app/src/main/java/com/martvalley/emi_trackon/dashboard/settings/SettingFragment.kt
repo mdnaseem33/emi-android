@@ -6,13 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.R
+import com.martvalley.emi_trackon.api.RetrofitInstance
+import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
 import com.martvalley.emi_trackon.dashboard.settings.controls.ControlsActivity
 import com.martvalley.emi_trackon.dashboard.settings.report.ReportActivity
 import com.martvalley.emi_trackon.databinding.FragmentDistributorBinding
 import com.martvalley.emi_trackon.databinding.FragmentSettingBinding
+import com.martvalley.emi_trackon.login.Auth
 import com.martvalley.emi_trackon.login.LoginActivity
+import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.SharedPref
+import com.martvalley.emi_trackon.utils.showApiErrorToast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class SettingFragment : Fragment() {
@@ -62,8 +72,6 @@ class SettingFragment : Fragment() {
         binding.control.root.setOnClickListener {
             startActivity(Intent(requireContext(), ControlsActivity::class.java))
         }
-
     }
-
 
 }

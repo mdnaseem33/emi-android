@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.dashboard.settings.controls.aggrement.AggrementFragment
@@ -47,7 +46,7 @@ class ControlsActivity : AppCompatActivity() {
 
         binding.device.txt.text = "Device"
         binding.reminder.txt.text = "Reminder"
-        binding.aggrement.txt.text =  this.getText(R.string.agreement)  //"Agreement"
+        binding.aggrement.txt.text = "Aggrement"
 
         binding.device.divider.show()
         binding.reminder.divider.invisible()
@@ -84,4 +83,9 @@ class ControlsActivity : AppCompatActivity() {
         transaction.commit()
     }
 
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finish()
+    }
 }

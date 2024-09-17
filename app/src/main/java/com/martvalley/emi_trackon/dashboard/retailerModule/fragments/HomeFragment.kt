@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -14,12 +15,18 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.adapter.HomePagerAdapter
+import com.martvalley.emi_trackon.dashboard.adapter.VideoAdapter
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
+import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerActiveUsersActivity
+import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerTodaysActivationActivity
+import com.martvalley.emi_trackon.dashboard.home.retailer.TotalRetailersActivity
 import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.KeyMainActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.SmartKey
 import com.martvalley.emi_trackon.databinding.FragmentHomeBinding
 import com.martvalley.emi_trackon.utils.hide
+import com.martvalley.emi_trackon.utils.logd
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
 import com.martvalley.emi_trackon.utils.withNetwork
@@ -37,13 +44,6 @@ class HomeFragment : Fragment() {
     private var exoPlayer: ExoPlayer? = null
     private var playbackPosition = 0L
     private var playWhenReady = true
-    private val images = listOf(
-        "https://img.freepik.com/premium-psd/horizontal-website-banne_451189-109.jpg?semt=ais_hybrid",
-        "https://img.freepik.com/free-vector/realism-hand-drawn-horizontal-banner_23-2150203461.jpg?semt=ais_hybrid",
-        "https://img.freepik.com/premium-psd/horizontal-website-banne_451189-109.jpg?semt=ais_hybrid",
-        "https://static.vecteezy.com/system/resources/previews/002/179/542/original/sale-offer-banner-with-hand-holding-phone-vector.jpg",
-        "https://img.freepik.com/free-vector/super-sale-phone-banner-mobile-clearance-sale-discount-poster-smartphone-sale-marketing-special-offer-promotion_433751-53.jpg"
-    )
 
     companion object {
         const val URL = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
@@ -58,10 +58,6 @@ class HomeFragment : Fragment() {
         viewPager2 = binding.viewPager2
         val keyLayout = binding.keyIncludedLayout
         //Pager Adapter
-        val adapter = HomePagerAdapter(images)
-        viewPager2.adapter = adapter
-        binding.wormDotsIndicator.attachTo(viewPager2)
-        preparePlayer()
 
         withNetwork { callDashboardApi() }
 
@@ -92,26 +88,26 @@ class HomeFragment : Fragment() {
         }
 
         binding.explore.todayActivation.setOnClickListener {
-
+            startActivity(Intent(requireContext(), RetailerTodaysActivationActivity::class.java))
         }
+
+        binding.explore.totalCustomer.setOnClickListener {
+            startActivity(Intent(context, TotalRetailersActivity::class.java))
+        }
+
+        binding.explore.helpSupport.setOnClickListener {
+            startActivity(Intent(requireContext(), ChatBotActivity::class.java))
+        }
+
+        binding.explore.activeCustomer.setOnClickListener {
+            startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
+        }
+
 
         return binding.root
     }
 
-    private fun preparePlayer() {
-        exoPlayer = ExoPlayer.Builder(requireContext()).build()
-        exoPlayer?.playWhenReady = true
-        binding.exoplayer.player = exoPlayer
-        val defaultHttpDataSourceFactory = DefaultHttpDataSource.Factory()
-        val mediaItem =
-            MediaItem.fromUri(URL)
-        val mediaSource = ProgressiveMediaSource.Factory(defaultHttpDataSourceFactory)
-            .createMediaSource(mediaItem)
-        exoPlayer?.setMediaSource(mediaSource)
-        exoPlayer?.seekTo(playbackPosition)
-        exoPlayer?.playWhenReady = playWhenReady
-        exoPlayer?.prepare()
-    }
+
 
     private fun releasePlayer() {
         exoPlayer?.let { player ->
@@ -134,6 +130,11 @@ class HomeFragment : Fragment() {
                 when (response.code()) {
                     200 -> {
                         response.body()?.let {
+                            val adapter = HomePagerAdapter(it.bannerList, requireContext())
+                            viewPager2.adapter = adapter
+                            binding.wormDotsIndicator.attachTo(viewPager2)
+                            binding.youtubeLinks.layoutManager = LinearLayoutManager(requireContext());
+                            binding.youtubeLinks.adapter = VideoAdapter(requireContext(), it.youtubeLinks)
 //                            binding.activation.numbers.text = it.todays_activation.toString()
 //                            binding.users.numbers.text = it.total_costomer.toString()
 //                            binding.activeUsers.numbers.text = it.active_costomer.toString()

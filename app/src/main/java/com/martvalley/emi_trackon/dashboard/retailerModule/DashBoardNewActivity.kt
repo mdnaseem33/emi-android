@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
@@ -52,6 +53,7 @@ class DashBoardNewActivity : AppCompatActivity() {
                 supportActionBar?.show()
             }
         }
+        binding.userNameTextView.text = SharedPref(this).getValueString(Constants.NAME)
 
         // setUpButtonNavigation()
 
@@ -69,6 +71,14 @@ class DashBoardNewActivity : AppCompatActivity() {
                             SharedPref(this@DashBoardNewActivity).save(Constants.USERID, it.id)
                             SharedPref(this@DashBoardNewActivity).save(Constants.NAME, it.name)
                             MainApplication.authData = it
+                            binding.userNameTextView.text = it.name
+                            if (it.image != null) {
+                                val imageUrl = Constants.BASEURL + "storage/public/" +it.image
+                                Glide.with(this@DashBoardNewActivity)
+                                    .load(imageUrl)
+                                    .into(binding.imageViewProfile);
+                            }
+
                         }
                     }
                     else -> {

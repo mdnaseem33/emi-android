@@ -94,13 +94,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <com.google.android.exoplayer2.ui.PlayerView
-                    android:id="@+id/exoplayer"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/youtube_links"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    app:resize_mode="fill"
-                    app:surface_type="texture_view"
-                    app:use_controller="false" />
+                    android:layout_height="wrap_content"/>
+
 
             </androidx.cardview.widget.CardView>
 

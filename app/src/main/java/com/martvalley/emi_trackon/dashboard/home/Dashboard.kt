@@ -6,7 +6,9 @@ object Dashboard {
         val credit_available: String,
         val credit_used: String,
         val todays_activation: String,
-        val total_costomer: String
+        val total_costomer: String,
+        val bannerList: List<Banner>,
+        val youtubeLinks: List<YoutubeLink>
     )
 
     data class DistributorResponse(

@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide.init
 import com.google.gson.Gson
 import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
@@ -37,6 +38,7 @@ import com.martvalley.emi_trackon.utils.logd
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
 import com.martvalley.emi_trackon.utils.showToast
+import com.martvalley.emi_trackon.utils.viewInGoogleMaps
 import com.martvalley.emi_trackon.utils.withNetwork
 import org.json.JSONException
 import org.json.JSONObject
@@ -67,37 +69,37 @@ class DeviceFragment : Fragment() {
     ): View? {
 
         popUpDetails = PopUpDetails(requireContext())
-       // initListener();
+        // initListener();
 
 
-        binding.rv
         return binding.root
     }
 
     private fun initListener() {
 
-      //   ("lock_task").setOnPreferenceClickListener(this);
+        //   ("lock_task").setOnPreferenceClickListener(this);
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         locationLisRecylerview = LocationLisRecylerview(requireContext(), listOf())
-
-
         callLocationApi()
 
-        list2.add(Control.DeviceActionOld(sm = "", display = "Audio", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "Wallpaper", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "Whatsapp", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "WA Business", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "Facebook", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "Instagram", value = false, "list2"))
-        list2.add(Control.DeviceActionOld(sm = "", display = "Youtube", value = false, "list2"))
+        list2.add(Control.DeviceActionOld(sm = "audio", display = "Audio", value = false, "list2"))
+        list2.add(Control.DeviceActionOld(sm = "swd", display = "Wallpaper", value = false, "list2"))
+        list2.add(Control.DeviceActionOld(sm = "whatsapp", display = "Whatsapp", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "whatsapp_buss", display = "WA Business", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "fb", display = "Facebook", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "insta", display = "Instagram", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "youtube", display = "Youtube", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "twitter", display = "Twitter", value = false, "list1"))
+        list2.add(Control.DeviceActionOld(sm = "thread", display = "Thread", value = false, "list1"))
 
-        list3.add(Control.DeviceActionOld(sm = "", display = "Location", value = false, "list3"))
-        list3.add(Control.DeviceActionOld(sm = "", display = "Call List", value = false, "list3"))
-        list3.add(Control.DeviceActionOld(sm = "", display = "Mobile No.", value = false, "list3"))
-        list3.add(Control.DeviceActionOld(sm = "", display = "Soft Reset", value = false, "list1"))
+        list3.add(Control.DeviceActionOld(sm = "location", display = "Location", value = false, "list3"))
+        list3.add(Control.DeviceActionOld(sm = "call_list", display = "Call List", value = false, "list3"))
+        list3.add(Control.DeviceActionOld(sm = "mobile_no", display = "Mobile No.", value = false, "list3"))
+        list3.add(Control.DeviceActionOld(sm = "sr", display = "Soft Reset", value = true, "list1"))
+        list3.add(Control.DeviceActionOld(sm = "debug", display = "Debugging", value = false, "list1"))
         list3.add(
             Control.DeviceActionOld(
                 sm = "fr",
@@ -114,7 +116,7 @@ class DeviceFragment : Fragment() {
                 "list1"
             )
         )
-        list3.add(Control.DeviceActionOld(sm = "", display = "Debugging", value = true, "list3"))
+        // list3.add(Control.DeviceActionOld(sm = "", display = "Debugging", value = true, "list3"))
 
 
         binding.getDetail.setOnClickListener {
@@ -130,10 +132,6 @@ class DeviceFragment : Fragment() {
                 "Wallpaper" -> {
                     withNetwork { callSetWallpaperApi() }
                 }
-////////////////
-
-
-
                 "Audio" -> {
                     withNetwork { callSetAudioApi() }
                 }
@@ -182,40 +180,11 @@ class DeviceFragment : Fragment() {
 
         }
 
-        binding.userimg.setOnClickListener {
-            ("I'm clicked").logd()
-            binding.closeEnlargedImg.show()
-            binding.photoView.show()
-        }
-
-        binding.closeEnlargedImg.setOnClickListener {
-            it.hide()
-            binding.photoView.hide()
-        }
-
-
         withNetwork { callGetUserApi() }
 
         binding.surrenderbtn.setOnClickListener {
             //popUpDetails.show()
-
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle("Confirmation")
-            builder.setMessage("Are you sure you want to Surrender?")
-
-            builder.setPositiveButton("Yes") { _, _ ->
-                withNetwork { surrenderCustomer() }
-            }
-
-            builder.setNegativeButton("Cancel") { _, _ ->
-                // Call onCancelled() when the user clicks "Cancel"
-
-            }
-
-            val dialog = builder.create()
-            dialog.show()
-
-
+            withNetwork { surrenderCustomer() }
         }
 
         binding.basicBtn.backgroundTintList =
@@ -363,7 +332,6 @@ class DeviceFragment : Fragment() {
         val jsonData = convertToJson(list1, list3)
         if(wall){
             swd.value= !swd.value;
-
         }
 
         val valueJson = JSONObject()
@@ -561,7 +529,7 @@ class DeviceFragment : Fragment() {
 
 
 
-            binding.userDetail.syncValueTv.text = data.created_at.convertISOTimeToDate()
+            // date.text = data.created_at.convertISOTimeToDate()
             if (gotTheRefreshedDate) {
                 syncValueTv.text = getCurrentDate()
             } else {
@@ -573,13 +541,8 @@ class DeviceFragment : Fragment() {
 
             if (!data.image.isNullOrEmpty()) {
                 binding.userimg.loadImage(Constants.BASEURL + "storage/" + data.image)
-                binding.photoView.loadImage(Constants.BASEURL + "storage/" + data.image)
-            } else {
-                return
             }
         }
-
-
 
     }
 
@@ -609,6 +572,13 @@ class DeviceFragment : Fragment() {
                         response.body()?.let {
                             (requireActivity() as ControlsActivity).cust_data = it
                             setUserData(it.customer)
+
+                            Log.d("data", it.customer.toString())
+                            if( it.customer.is_set_wallpaper == "1"){
+                                it.action.swd.value = true
+                            }else{
+                                it.action.swd.value = false
+                            }
                             setList1Data(it.action)
                         }
                     }
@@ -659,15 +629,19 @@ class DeviceFragment : Fragment() {
 
     private fun setList1Data(action: Control.Action) {
         list1.clear()
-
+        list1.add(
+            Control.DeviceActionOld(
+                "brl", "Brightness", false, "list1"
+            )
+        )
         val json = JSONObject(Gson().toJson(action))
         val iter: Iterator<String> = json.keys()
-        json.logd("actionData123")
         while (iter.hasNext()) {
             val key = iter.next()
+            key.logd("actionData123")
             try {
                 val value = json.get(key) as JSONObject
-                if (key == "fr" || key == "uftd") {
+                if (arrayListOf("fr" ,"debug","uftd").contains(key)) {
                     list3.forEachIndexed { i, it ->
                         if (it.sm == key) {
                             list3[i].value = value.getBoolean("value")
@@ -675,15 +649,30 @@ class DeviceFragment : Fragment() {
 
                         }
                     }
-                } else if( key == "swd" ) {
-                    swd=
-                        Control.DeviceActionOld(
-                            key, value.getString("display"), value.getBoolean("value"), "list1"
-                        )
+                } else if( arrayListOf("swd", "whatsapp","twitter","thread", "fb", "insta", "youtube", "whatsapp_buss").contains(key) ) {
+                    list2.forEachIndexed { i, it ->
+                        if (it.sm == key) {
+                            list2[i].value = value.getBoolean("value")
 
-                    list2[1].value= value.getBoolean("value")
 
-                }  else  {
+                        }
+                    }
+                    //list2.logd("key ${value.getBoolean("value")} list2")
+//                    swd=
+//                        Control.DeviceActionOld(
+//                            key, value.getString("display"), value.getBoolean("value"), "list1"
+//                        )
+//
+//                    list2[1].value= value.getBoolean("value")
+
+                } else if( arrayListOf("brl").contains(key) ) {
+                    list1.forEachIndexed { i, it ->
+                        if (it.sm == key) {
+
+                            list1[i].value = value.getBoolean("value")
+                        }
+                    }
+                } else  {
                     list1.add(
                         Control.DeviceActionOld(
                             key, value.getString("display"), value.getBoolean("value"), "list1"
@@ -715,9 +704,9 @@ class DeviceFragment : Fragment() {
             jsonObject.put(it.sm, valueJson)
         }
 
-        list3.forEach {
+        list3.map {
 
-            if (it.sm == "fr" || it.sm == "uftd") {
+            if(it.sm != ""){
                 val valueJson = JSONObject()
                 valueJson.put("display", it.display)
 
@@ -727,6 +716,16 @@ class DeviceFragment : Fragment() {
 
         }
 
+        list2.map {
+            if(it.sm != ""){
+                val valueJson = JSONObject()
+                valueJson.put("display", it.display)
+
+                valueJson.put("value", it.value)
+                jsonObject.put(it.sm, valueJson)
+            }
+        }
+        jsonObject.logd("json data")
         return jsonObject
     }
 
@@ -879,6 +878,5 @@ class DeviceFragment : Fragment() {
         })
     }
 }
-
 
 

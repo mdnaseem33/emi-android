@@ -6,14 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.R
+import com.martvalley.emi_trackon.api.RetrofitInstance
+import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
 import com.martvalley.emi_trackon.dashboard.settings.*
 import com.martvalley.emi_trackon.dashboard.settings.controls.ControlsActivity
 import com.martvalley.emi_trackon.dashboard.settings.report.ReportActivity
 import com.martvalley.emi_trackon.databinding.FragmentRetailerSettingBinding
+import com.martvalley.emi_trackon.login.Auth
 import com.martvalley.emi_trackon.login.LoginActivity
+import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.SharedPref
 import com.martvalley.emi_trackon.utils.openWhatsAppConversationUsingUri
+import com.martvalley.emi_trackon.utils.showApiErrorToast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RetailerSettingFragment : Fragment() {
 
@@ -47,13 +57,17 @@ class RetailerSettingFragment : Fragment() {
         //binding.audio.tv.text = "Audio Customize"
 
 
+//        binding.support.root.setOnClickListener {
+//            context?.let { it1 -> openWhatsAppConversationUsingUri(it1, "+912269646511", "") }
+//        }
+
         binding.support.root.setOnClickListener {
-            context?.let { it1 -> openWhatsAppConversationUsingUri(it1, "+912269646511", "") }
+            startActivity(Intent(requireContext(), ChatBotActivity::class.java))
         }
 
-//        binding.report.root.setOnClickListener {
-//            startActivity(Intent(requireContext(), ReportActivity::class.java))
-//        }
+        binding.report.root.setOnClickListener {
+            startActivity(Intent(requireContext(), ReportActivity::class.java))
+        }
         binding.msg.root.setOnClickListener {
             startActivity(Intent(requireContext(), LockMessageActivity::class.java))
         }
@@ -77,5 +91,40 @@ class RetailerSettingFragment : Fragment() {
         binding.profile.root.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
+        callAuthApi()
+    }
+
+    private fun callAuthApi() {
+        val call = RetrofitInstance.apiService.getAuthApi()
+        call.enqueue(object : Callback<Auth.AuthResponse> {
+            override fun onResponse(
+                call: Call<Auth.AuthResponse>, response: Response<Auth.AuthResponse>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        response.body()?.let {
+                            binding.report.userNameTextView.text = it.name
+                            binding.report.userPhoneTextView.text = it.phone
+                            if (it.image != null) {
+                                val imageUrl = Constants.BASEURL + "storage/public/" +it.image
+                                Glide.with(requireContext())
+                                    .load(imageUrl)
+                                    .into(binding.report.imageViewProfile);
+                            }
+
+                        }
+                    }
+                    else -> {
+                        requireContext().showApiErrorToast()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Auth.AuthResponse>, t: Throwable) {
+                requireContext().showApiErrorToast()
+            }
+
+        })
+
     }
 }
