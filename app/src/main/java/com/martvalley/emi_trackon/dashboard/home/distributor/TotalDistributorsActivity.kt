@@ -93,7 +93,11 @@ class TotalDistributorsActivity : AppCompatActivity() {
     private fun filterList(key: String) {
         val filter_list = ArrayList<Retailer.User>()
         list.forEach {
-            if (it.name.lowercase().contains(key)) {
+            if (it.name != null && it.name.lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if (it.id != null && it.id.toString().lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if (it.phone != null && it.phone.lowercase().contains(key)) {
                 filter_list.add(it)
             }
         }

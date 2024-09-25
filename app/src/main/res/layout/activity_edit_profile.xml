@@ -201,6 +201,7 @@
                     android:textSize="@dimen/_10sdp" />
 
                 <CheckBox
+                    android:visibility="gone"
                     android:id="@+id/checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -209,12 +210,22 @@
                     android:text="Please sign here" />
 
                 <ImageView
+                    android:id="@+id/clearSign"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end"
+                    android:contentDescription="@string/clear_sign"
+                    android:src="@drawable/refresh"
+                    app:tint="@color/purple_700" />
+
+                <com.github.gcacace.signaturepad.views.SignaturePad
                     android:id="@+id/sign_view"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_100sdp"
-                    android:background="@drawable/rect_bg"
-                    android:padding="@dimen/_10sdp"
-                    android:visibility="gone" />
+                    android:layout_height="150dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/text_key_radius_grey"
+                    app:penColor="@color/black" />
 
 
             </LinearLayout>

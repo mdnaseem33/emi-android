@@ -13,6 +13,7 @@ import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.databinding.UserItemBinding
 import com.martvalley.emi_trackon.utils.convertISOTimeToDate
 import com.martvalley.emi_trackon.utils.hide
+import com.martvalley.emi_trackon.utils.loadImage
 import com.martvalley.emi_trackon.utils.show
 
 class TodaysActivationUserAdapter(
@@ -43,17 +44,31 @@ class TodaysActivationUserAdapter(
             binding.id.text = data.id.toString()
             binding.name.text = data.name ?: ""
             binding.imei1Value.text = data.imei1 ?: ""
-            binding.imei2Value.text = data.imei2 ?: ""
             binding.createdValue.text = data.created_at.convertISOTimeToDate()
-            binding.syncValue.text = data.last_sync?.split(" ")?.get(0) ?: ""
+            var key_type = "Smart Key"
+            when(data.key_type){
 
+                1 -> {
+                    key_type = "Smart Key"
+                }
+                2 -> {
+                   key_type = "Super Key"
+                }
+                3 -> {
+                    key_type = "Home Appliance"
+                }
+                4 -> {
+                    key_type = "Udhar"
+                }
+            }
+            binding.keyType.text = key_type;
             if (data.is_link == "0") {
                 binding.statusBtn.text = "Show QR"
                 binding.statusBtn.backgroundTintList =
                     ColorStateList.valueOf(context.getColor(R.color.blue))
             } else {
                 binding.statusBtn.text = when (data.status) {
-                    0 -> "Surrendered"
+                    0 -> "Removed"
                     1 -> "active"
                     else -> ""
                 }
@@ -79,7 +94,6 @@ class TodaysActivationUserAdapter(
                     )
                 }
             }
-            binding.more.setOnClickListener { listner(data, "more", adapterPosition) }
 
         }
     }

@@ -1,5 +1,8 @@
 package com.martvalley.emi_trackon.dashboard.settings.controls
 
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Bank
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
+
 object Control {
 
     data class GetCustomerResponse(
@@ -57,10 +60,16 @@ object Control {
         val sim1_number: String?,
         val sim2_network: String?,
         val sim2_number: String?,
+        val reference_name: String?,
+        val reference_number: String?,
         val status: Int,
         val updated_at: String,
         val action: Any,
-        val is_set_wallpaper: String
+        val is_set_wallpaper: String,
+        val key_type: Int,
+        val application_type: String,
+        val bank: Bank?,
+        val brand: Brand?
     )
 
 

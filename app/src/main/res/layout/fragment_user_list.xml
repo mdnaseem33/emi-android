@@ -31,6 +31,7 @@
         app:layout_constraintTop_toTopOf="@+id/view1" />
 
     <ImageView
+        android:id="@+id/more_option"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="15dp"
@@ -75,7 +76,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:fontFamily="@font/roboto_regular"
-                android:hint="Search by Name and ID"
+                android:hint="@string/search_by_name_id_imei_mobile_no"
                 android:imeOptions="actionDone"
                 android:textColor="@color/blue"
                 android:textColorHint="@color/blue"

@@ -160,4 +160,5 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="search_by_name_id_imei_mobile_no"><![CDATA[Search by Name, ID, IMEI & Mobile No.]]></string>
 </resources>

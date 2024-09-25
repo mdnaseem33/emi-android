@@ -43,6 +43,7 @@ import androidx.core.content.FileProvider
 import androidx.core.os.postDelayed
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
@@ -60,6 +61,8 @@ import com.martvalley.emi_trackon.dashboard.home.retailer.CreateUserActivity.Com
 import com.martvalley.emi_trackon.dashboard.home.retailer.DialogFragment
 import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.adapter.SearchableFinanceAdapter
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.CameraFragment
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.onImageCaptureListener
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Bank
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
@@ -89,7 +92,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.concurrent.Executors
 
-class SmartKey : AppCompatActivity() {
+class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureListener {
     private val binding by lazy { ActivitySmartKeyBinding.inflate(layoutInflater) }
     private val TAG = "SmartKey"
     private var step = 0
@@ -99,7 +102,9 @@ class SmartKey : AppCompatActivity() {
     var selectedItem: Brand? = null
     var selectedBank: Bank? = null
     var selectedFrequency: Int = 0
+    var selectedNumberOfInstallment: Int =0
     val installmentType = arrayOf("Select Installment frequency", "Daily", "Weekly","Monthly")
+    val numberOfInstallment = arrayOf("Select Number of Installment", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private lateinit var searchableSpinnerAdapter: SearchableSpinnerAdapter
     private lateinit var searchableFinanceAdapter: SearchableFinanceAdapter
     private val PICK_IMAGE_FROM_GALLERY = 1
@@ -110,14 +115,28 @@ class SmartKey : AppCompatActivity() {
     private var customer_id_back: String?= null
     private var reference_id_front: String? = null
     private var reference_id_back: String? = null
+    private var product_photo: String? = null
     private var selected_image_id: String? = null
     private var signatureImage: Boolean = false
+    // Start MainFragment
+    val fragmentManager: FragmentManager = supportFragmentManager
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let { uri ->
+            try {
+                val fragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
+                if (fragment != null) {
+                    supportFragmentManager.beginTransaction()
+                        .remove(fragment)
+                        .commit()
+                }
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
             processImages(uri)
             selected_image_id = null
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -145,7 +164,12 @@ class SmartKey : AppCompatActivity() {
         }
 
         binding.scanButton.setOnClickListener{
-
+            // Start MainFragment
+            val fragmentManager: FragmentManager = supportFragmentManager
+            fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ScannerFragment())
+                .addToBackStack(null) // Optional: allows user to go back
+                .commit()
         }
 
         binding.clearSign.setOnClickListener{
@@ -172,6 +196,10 @@ class SmartKey : AppCompatActivity() {
             true
         }
 
+        binding.backTextView.setOnClickListener {
+            finish()
+        }
+
         binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             if (checkedId == R.id.radioColletEmi) {
                 binding.emiSection.visibility = View.VISIBLE
@@ -193,6 +221,11 @@ class SmartKey : AppCompatActivity() {
             selected_image_id = "idFrontText"
             showChooseImageSourceDialog()
         }
+        binding.productText.setOnClickListener {
+            selected_image_id = "productImage"
+            showChooseImageSourceDialog()
+        }
+
         binding.idbackText.setOnClickListener {
             selected_image_id = "idbackText"
             showChooseImageSourceDialog()
@@ -209,7 +242,19 @@ class SmartKey : AppCompatActivity() {
         binding.signText.setOnClickListener {
             showNextStep(0)
         }
+        binding.loanAmounttEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                calculateEmi()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+        })
         binding.signaturePad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
                 // Event triggered when the pad is touched
@@ -229,8 +274,15 @@ class SmartKey : AppCompatActivity() {
         })
     }
 
+
     private fun showChooseImageSourceDialog() {
+
+        fragmentManager.beginTransaction()
+            .replace(R.id.fragment_container, CameraFragment())
+            .addToBackStack(null) // Optional: allows user to go back
+            .commit()
         pickImage.launch("image/*")
+
         return;
     }
 
@@ -275,6 +327,15 @@ class SmartKey : AppCompatActivity() {
                         customer_id_front = ("data:image/png;base64,$media")
                         binding.idChecked.setImageResource(R.drawable.checked_green)
                         binding.idFrontText.text = "Update"
+                    }
+                }
+            }
+            "productImage" -> {
+                selectedImageUri?.let { uri ->
+                    compressImageFromUriAndGetBase64(uri){ media->
+                        product_photo = ("data:image/png;base64,$media")
+                        binding.productChecked.setImageResource(R.drawable.checked_green)
+                        binding.productText.text = "Update"
                     }
                 }
             }
@@ -329,15 +390,47 @@ class SmartKey : AppCompatActivity() {
         datePickerDialog.show()
     }
 
+    private fun calculateEmi(){
+        if(selectedNumberOfInstallment ==0){
+            binding.totalEmi.text = "Total Loan Amount: ₹0.00"
+            return;
+        }
+
+        if(binding.loanAmounttEditText.text.toString() == "" || binding.loanAmounttEditText.text.toString() == "0"){
+            binding.totalEmi.text = "Total Loan Amount: ₹0.00"
+            return
+        }
+        val loanAmount = binding.loanAmounttEditText.text.toString().toDouble() * selectedNumberOfInstallment
+        binding.totalEmi.text = "Total Loan Amount: ₹${String.format("%.2f", loanAmount)}"
+    }
+
     private fun setUpSpinners() {
         val adapter =
             ArrayAdapter(this,R.layout.spinner_layout, installmentType)
+
         binding.installmentFreqBtn.adapter = adapter
 
         binding.installmentFreqBtn.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, postion: Int, p3: Long) {
                 binding.installmentFreqBtn.setSelection(postion);
                 selectedFrequency = postion
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+
+        val adapterInstall =
+            ArrayAdapter(this,R.layout.select_number_layout, numberOfInstallment)
+        binding.numberOfInstallmentsBtn.adapter = adapterInstall
+
+        binding.numberOfInstallmentsBtn.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, postion: Int, p3: Long) {
+                binding.numberOfInstallmentsBtn.setSelection(postion);
+                selectedNumberOfInstallment = postion
+                calculateEmi()
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -441,7 +534,13 @@ class SmartKey : AppCompatActivity() {
     }
 
     private fun getCreateData(){
-        val call = RetrofitInstance.apiService.getCustomerCreateData()
+        var is_appliance = 'N'
+        var is_mobile = 'Y'
+        if(intent.getStringExtra("title") == "Home Appliance"){
+            is_appliance = 'Y'
+            is_mobile = 'N'
+        }
+        val call = RetrofitInstance.apiService.getCustomerCreateData(is_mobile, is_appliance)
         call.enqueue(object : Callback<CreateCustomerData> {
             override fun onResponse(
                 p0: Call<CreateCustomerData>,
@@ -471,6 +570,8 @@ class SmartKey : AppCompatActivity() {
                     binding.selectBank.setSelection(0)
 
                 }
+
+                binding.loanNumEditText.setText(createCustomerData!!.loan_id)
             }
 
             override fun onFailure(p0: Call<CreateCustomerData>, p1: Throwable) {
@@ -589,7 +690,6 @@ class SmartKey : AppCompatActivity() {
             return
         }
 
-        if(binding.radioColletEmi.isChecked){
             payment_type=1
             if(binding.datepicker.text.toString().isEmpty()){
                 Toast.makeText(this, "Please select a date", Toast.LENGTH_SHORT).show()
@@ -599,6 +699,12 @@ class SmartKey : AppCompatActivity() {
 
             if(selectedFrequency < 1){
                 Toast.makeText(this, "Please select installment frequency", Toast.LENGTH_SHORT).show()
+                hideLoading()
+                return
+            }
+
+            if(selectedNumberOfInstallment < 1){
+                Toast.makeText(this, "Please select Number of installments", Toast.LENGTH_SHORT).show()
                 hideLoading()
                 return
             }
@@ -621,7 +727,7 @@ class SmartKey : AppCompatActivity() {
                 return
             }
 
-        }
+
         val request = RequestSmartKey(
             selectedBank!!.id,
             selectedItem!!.id,
@@ -644,17 +750,18 @@ class SmartKey : AppCompatActivity() {
             binding.referenceNameEditText.text.toString(),
             binding.referenceMobileEditText.text.toString(),
             getSignature(),
-            binding.numberOfInstallments.text.toString().toInt(),
+            selectedNumberOfInstallment,
             binding.applianceType.text.toString(),
-            binding.serialNumberEdit.text.toString()
+            binding.serialNumberEdit.text.toString(),
+            product_photo
         )
 
         if(intent.getStringExtra("title") == "Smart Key"){
-            withNetwork { createSuperKey(request) }
+            withNetwork { createSmartKey(request) }
         }else if(intent.getStringExtra("title") == "Home Appliance"){
             withNetwork { createHomeKey(request) }
         }else{
-            withNetwork { createSmartKey(request) }
+            withNetwork { createSuperKey(request) }
         }
     }
 
@@ -720,7 +827,7 @@ class SmartKey : AppCompatActivity() {
                             Intent(this@SmartKey, UserQrActivity::class.java).putExtra(
                                 "id",
                                 response.body()!!.customer_id.toString()
-                            ))
+                            ).putExtra("local_image", true))
                         finish()
                     }
                     else -> {
@@ -778,6 +885,15 @@ class SmartKey : AppCompatActivity() {
 
         })
 
+    }
+
+    override fun onBarcodeScanned(barcode: String) {
+        binding.imeiEditText.setText(barcode)
+    }
+
+    override fun onImageCapture(uri: Uri) {
+        processImages(uri)
+        selected_image_id = null
     }
 
 }

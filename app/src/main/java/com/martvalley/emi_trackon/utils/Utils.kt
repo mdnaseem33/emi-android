@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.*
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
@@ -35,6 +36,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import android.util.Base64
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
 
 
 fun Bitmap.bitmapToBase64(): String {
@@ -43,6 +46,31 @@ fun Bitmap.bitmapToBase64(): String {
     val byteArr = bytes.toByteArray()
     val media = android.util.Base64.encodeToString(byteArr, android.util.Base64.DEFAULT)
     return ("data:image/png;base64,$media")
+}
+
+fun Context.compressImageFromUriAndGetBase64( imageUri: Uri, callback: (String?) -> Unit) {
+    Glide.with(this)
+        .asBitmap()
+        .load(imageUri)
+        .apply(RequestOptions().override(512, 384)) // Resize the image as needed
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?) {
+                // Compress the Bitmap to ByteArray
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                resource.compress(Bitmap.CompressFormat.JPEG, 75, byteArrayOutputStream) // Quality (0-100)
+                val byteArray = byteArrayOutputStream.toByteArray()
+
+                // Encode ByteArray to Base64
+                val base64String = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+                // Pass the Base64 string to the callback
+                callback(base64String)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+                showToast("Image loading failed")
+            }
+        })
 }
 
 fun String.base64ToBitmap(): Bitmap {

@@ -66,6 +66,9 @@ interface ApiService {
     @GET("api/customer")
     fun getCustomerListApi(): Call<User.UserListResponse>
 
+    @Headers("Accept: application/json")
+    @GET("api/get/tutorials")
+    fun getTutorialsListApi(): Call<Dashboard.YoutbeLinksResponse>
 
     @Headers("Accept: application/json")
     @GET("api/retailersss")
@@ -231,6 +234,21 @@ interface ApiService {
     @POST("api/set/wallpaper")
     fun saveWallpaperApi(@Body request: Settings.SaveWallpaperRequest): Call<Settings.SaveWallpaperResponse>
 
+    @Headers("Accept: application/json")
+    @POST("api/set/photo")
+    fun saveProfileImage(@Body request: Settings.SaveProfileRequest): Call<Settings.SaveWallpaperResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/set/payment-qr")
+    fun saveQrApi(@Body request: Settings.SavePaymentRequest): Call<Settings.SaveWallpaperResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/set/frp")
+    fun savefrpEmailApi(@Body request: Settings.SaveFrpEmailRequest): Call<Settings.SaveWallpaperResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/set/loan_prefix")
+    fun saveLoanPrefixApi(@Body request: Settings.SaveLoanPrefixRequest): Call<Settings.SaveWallpaperResponse>
 
     @Headers("Accept: application/json")
     @POST("api/customer/store")
@@ -284,6 +302,10 @@ interface ApiService {
     fun    surrenderCustomer(
         @Query("customerId") customerId: String,
     ): Call<Control.SurrenderResponse>
+
+    @Headers("Accept: application/json")
+    @GET("api/customer/get/create")
+    fun getCustomerCreateData( @Query("is_mobile") is_mobile: Char?, @Query("is_appliance") is_appliance: Char? ): Call<CreateCustomerData>
 
     @Headers("Accept: application/json")
     @GET("api/customer/get/create")

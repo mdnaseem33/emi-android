@@ -13,11 +13,14 @@ import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.people.retailer.Retailer
 import com.martvalley.emi_trackon.dashboard.people.user.MoreOption
 import com.martvalley.emi_trackon.dashboard.people.user.MoreOptionFragment
+import com.martvalley.emi_trackon.dashboard.people.user.User
+import com.martvalley.emi_trackon.dashboard.people.user.UserAdapter
 import com.martvalley.emi_trackon.dashboard.people.user.UserViewActivity
 import com.martvalley.emi_trackon.dashboard.settings.controls.ControlsActivity
 import com.martvalley.emi_trackon.databinding.ActivityRetailerActiveUsersBinding
 import com.martvalley.emi_trackon.databinding.ActivityRetailerTodaysActivationBinding
 import com.martvalley.emi_trackon.utils.hide
+import com.martvalley.emi_trackon.utils.logd
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
 import com.martvalley.emi_trackon.utils.withNetwork
@@ -27,8 +30,8 @@ import retrofit2.Response
 
 class RetailerActiveUsersActivity : AppCompatActivity() {
     private val binding by lazy { ActivityRetailerActiveUsersBinding.inflate(layoutInflater) }
-    private lateinit var adapter: ActiveUsersUserAdapter
-    val list = ArrayList<Dashboard.ActiveCostomerr>()
+    private lateinit var adapter: UserAdapter
+    val list = ArrayList<User.Customer>()
 
     val vieww =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -49,7 +52,7 @@ class RetailerActiveUsersActivity : AppCompatActivity() {
         binding.toolbar.calender.hide()
 
 
-        adapter = ActiveUsersUserAdapter(list, this) { data, action, pos ->
+        adapter = UserAdapter(list, this) { data, action, pos ->
 
             when (action) {
 //                "action" -> callChangeStatusApi(data.id.toString(), data.status.toString(), pos)
@@ -117,7 +120,7 @@ class RetailerActiveUsersActivity : AppCompatActivity() {
 
 
     private fun filterList(key: String) {
-        val filter_list = ArrayList<Dashboard.ActiveCostomerr>()
+        val filter_list = ArrayList<User.Customer>()
         list.forEach {
             if (it.name.lowercase().contains(key)) {
                 filter_list.add(it)

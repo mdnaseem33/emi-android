@@ -21,6 +21,7 @@ import com.martvalley.emi_trackon.utils.withNetwork
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 class DashBoardNewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardNewBinding
@@ -54,12 +55,21 @@ class DashBoardNewActivity : AppCompatActivity() {
             }
         }
         binding.userNameTextView.text = SharedPref(this).getValueString(Constants.NAME)
+        // Get current hour
+        val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
 
+        // Determine greeting based on the current hour
+        val greeting = when {
+            currentHour in 5..11 -> "Good morning!"
+            currentHour in 12..17 -> "Good afternoon!"
+            else -> "Good evening!"
+        }
+        binding.staticText1.text = greeting
         // setUpButtonNavigation()
 
     }
 
-    private fun callAuthApi() {
+    public fun callAuthApi() {
         val call = RetrofitInstance.apiService.getAuthApi()
         call.enqueue(object : Callback<Auth.AuthResponse> {
             override fun onResponse(
@@ -94,4 +104,10 @@ class DashBoardNewActivity : AppCompatActivity() {
         })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        callAuthApi()
+    }
+
 }

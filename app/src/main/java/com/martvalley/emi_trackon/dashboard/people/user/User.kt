@@ -1,5 +1,8 @@
 package com.martvalley.emi_trackon.dashboard.people.user
 
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Bank
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
+
 object User {
 
     data class UserModel(
@@ -33,6 +36,9 @@ object User {
         val emi_months: Int,
         val firebase_token: String,
         val first_intallment_date: String,
+        val key_type: Int?,
+        val brand: Brand?,
+        val bank: Bank?,
         val id: Int,
         val image: String,
         val imei1: String,

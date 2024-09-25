@@ -9,7 +9,9 @@ import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.github.gcacace.signaturepad.views.SignaturePad
 import com.martvalley.emi_trackon.MainApplication
+import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.people.retailer.Retailer
 import com.martvalley.emi_trackon.databinding.ActivityEditProfileBinding
@@ -35,7 +37,20 @@ class EditProfileActivity : AppCompatActivity() {
         binding.toolbar.calender.hide()
 
         setData()
+        binding.clearSign.setOnClickListener{
+            binding.signView.clear()
+        }
+        binding.signView.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+                // Event triggered when the pad is touched
+            }
 
+            override fun onSigned() {
+            }
+
+            override fun onClear() {
+            }
+        })
         binding.saveButton.setOnClickListener {
             val address = binding.retailerAddressEt.text.trim().toString()
             val email = binding.retailerEmailEt.text.trim().toString()
@@ -68,7 +83,7 @@ class EditProfileActivity : AppCompatActivity() {
                     name = name,
                     owner_name = ownername,
                     state = state,
-                    sign = bitmap?.bitmapToBase64().toString()
+                    sign = getSignature()
                 )
                 callEditApi(request)
             }
@@ -96,6 +111,15 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
+    private fun getSignature(): String{
+        try {
+            return "data:image/png;base64," + binding.signView.getSignatureBitmap().toBase64StringBitmap()
+        }catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        return "";
+    }
     private fun setData() {
         MainApplication.authData?.let {
             binding.retailerAddressEt.setText(it.address)
@@ -112,8 +136,7 @@ class EditProfileActivity : AppCompatActivity() {
                     override fun onResourceReady(
                         resource: Bitmap, transition: Transition<in Bitmap>?
                     ) {
-                        binding.signView.setImageBitmap(resource)
-                        bitmap = resource
+                        binding.signView.signatureBitmap = resource
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) {
@@ -164,26 +187,5 @@ class EditProfileActivity : AppCompatActivity() {
 
     }
 
-
-//    override fun onResume() {
-//        super.onResume()
-//
-//        if (bitmap != null) {
-//            binding.signView.show()
-//            binding.signView.setImageBitmap(bitmap)
-//            binding.checkbox.isChecked = true
-//        }
-//    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 10 && resultCode == Activity.RESULT_OK) {
-            if (bitmap != null) {
-                binding.signView.show()
-                binding.signView.setImageBitmap(bitmap)
-                binding.checkbox.isChecked = true
-            }
-        }
-    }
 
 }

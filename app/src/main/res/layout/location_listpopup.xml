@@ -52,20 +52,10 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="start"
-                android:text="Lat"
+                android:text="Date Time"
                 android:textSize="@dimen/_16sdp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/lon_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:text="Lon"
-                android:textSize="@dimen/_16sdp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/viewOnMap"

@@ -22,6 +22,7 @@ import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerTodaysActivati
 import com.martvalley.emi_trackon.dashboard.home.retailer.TotalRetailersActivity
 import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.TutorialActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.KeyMainActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.SmartKey
 import com.martvalley.emi_trackon.databinding.FragmentHomeBinding
@@ -33,6 +34,7 @@ import com.martvalley.emi_trackon.utils.withNetwork
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Calendar
 
 
 class HomeFragment : Fragment() {
@@ -45,9 +47,6 @@ class HomeFragment : Fragment() {
     private var playbackPosition = 0L
     private var playWhenReady = true
 
-    companion object {
-        const val URL = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,6 +102,10 @@ class HomeFragment : Fragment() {
             startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
         }
 
+        binding.explore.videoTutorials.setOnClickListener {
+            startActivity(Intent(context, TutorialActivity::class.java))
+        }
+
 
         return binding.root
     }
@@ -135,17 +138,6 @@ class HomeFragment : Fragment() {
                             binding.wormDotsIndicator.attachTo(viewPager2)
                             binding.youtubeLinks.layoutManager = LinearLayoutManager(requireContext());
                             binding.youtubeLinks.adapter = VideoAdapter(requireContext(), it.youtubeLinks)
-//                            binding.activation.numbers.text = it.todays_activation.toString()
-//                            binding.users.numbers.text = it.total_costomer.toString()
-//                            binding.activeUsers.numbers.text = it.active_costomer.toString()
-//                            binding.creditUsed.numbers.text = it.credit_used.toString()
-//                            binding.creditAvailable.numbers.text = it.credit_available.toString()
-//
-//                            binding.retailerId.text = MainApplication.authData?.qr_id.toString()
-//                            binding.retailerId.text =
-//                                context?.let { it1 ->
-//                                    SharedPref(it1).getValueInt(Constants.USERID).toString()
-//                                }
 
                         }
                     }

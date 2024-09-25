@@ -42,9 +42,25 @@ class CreditUsedUserAdapter(
             binding.id.text = data.id.toString()
             binding.name.text = data.recieved.name ?: ""
             binding.imei1Value.text = data.recieved.imei1.toString()
-            binding.imei2Value.text = data.recieved.imei2.toString()
+            //binding.imei2Value.text = data.recieved.imei2.toString()
             binding.createdValue.text = data.created_at.convertISOTimeToDate()
-            binding.syncValue.text = data.recieved.last_sync?.split(" ")?.get(0) ?: ""
+            var key_type = "Smart Key"
+            when(data.recieved.key_type){
+
+                1 -> {
+                    key_type = "Smart Key"
+                }
+                2 -> {
+                    key_type = "Super Key"
+                }
+                3 -> {
+                    key_type = "Home Appliance"
+                }
+                4 -> {
+                    key_type = "Udhar"
+                }
+            }
+            binding.keyType.text = key_type;
 
             if (data.recieved.is_link == "0") {
                 binding.statusBtn.text = "Show QR"
@@ -52,7 +68,7 @@ class CreditUsedUserAdapter(
                     ColorStateList.valueOf(context.getColor(R.color.blue))
             } else {
                 binding.statusBtn.text = when (data.recieved.status) {
-                    0 -> "Surrendered"
+                    0 -> "Removed"
                     1 -> "active"
                     else -> ""
                 }
@@ -77,12 +93,12 @@ class CreditUsedUserAdapter(
                         )
                     )
                 } else {
-                    if (binding.statusBtn.text != "Surrendered") {
+                    if (binding.statusBtn.text != "Removed") {
                         listner(data, "action", adapterPosition)
                     }
                 }
             }
-            binding.more.setOnClickListener { listner(data, "more", adapterPosition) }
+            //binding.more.setOnClickListener { listner(data, "more", adapterPosition) }
 
         }
     }

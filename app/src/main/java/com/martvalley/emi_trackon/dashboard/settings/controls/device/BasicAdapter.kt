@@ -59,21 +59,21 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.call_lock)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
                 "ip" -> {
                     binding.tv.setImageResource(R.drawable.app_install)
                     binding.currentState.visibility = View.VISIBLE
-                    if (data.value){
-                        binding.currentState.text = "OFF"
+                    if (!data.value){
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -81,21 +81,21 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.status_bar)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
                 "uip" -> {
                     binding.tv.setImageResource(R.drawable.app_uninstall)
                     binding.currentState.visibility = View.VISIBLE
-                    if (data.value){
-                        binding.currentState.text = "OFF"
+                    if (!data.value){
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -103,10 +103,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.volume_lock)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -118,10 +118,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.wallpaper_change)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -129,10 +129,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.sms_lock)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -140,16 +140,27 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.britness_lock)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
                 "location" -> {
                     binding.tv.setImageResource(R.drawable.location)
                     binding.currentState.visibility = View.GONE
+                }
+                "online_check" -> {
+                    binding.tv.setImageResource(R.drawable.online_check)
+                    binding.currentState.visibility = View.VISIBLE
+                    if (!data.value){
+                        binding.currentState.text = "Offline"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
+                    }else{
+                        binding.currentState.text = "Online"
+                        binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
+                    }
                 }
                 "mobile_no" -> {
                     binding.tv.setImageResource(R.drawable.mobile_no)
@@ -162,11 +173,11 @@ class BasicAdapter(
                 "uftd" ->{
                     binding.tv.setImageResource(R.drawable.data_transfer)
                     binding.currentState.visibility = View.VISIBLE
-                    if (data.value){
-                        binding.currentState.text = "OFF"
+                    if (!data.value){
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -174,10 +185,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.soft_reset)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -185,10 +196,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.whatsapp_hide)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -196,10 +207,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.hide_whatsapp_buss)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -207,10 +218,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.facebook_hide)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -218,10 +229,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.hide_insta)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -229,10 +240,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.hide_twitter)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -240,10 +251,10 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.hide_thread)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
@@ -251,32 +262,32 @@ class BasicAdapter(
                     binding.tv.setImageResource(R.drawable.hide_youtube)
                     binding.currentState.visibility = View.VISIBLE
                     if (data.value){
-                        binding.currentState.text = "OFF"
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
                 "fr" -> {
                     binding.tv.setImageResource(R.drawable.hard_reset)
                     binding.currentState.visibility = View.VISIBLE
-                    if (data.value){
-                        binding.currentState.text = "OFF"
+                    if (!data.value){
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }
                 "debug" -> {
                     binding.tv.setImageResource(R.drawable.disable_debug)
                     binding.currentState.visibility = View.VISIBLE
-                    if (data.value){
-                        binding.currentState.text = "OFF"
+                    if (!data.value){
+                        binding.currentState.text = "Locked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.red))
                     }else{
-                        binding.currentState.text = "ON"
+                        binding.currentState.text = "Unlocked"
                         binding.currentState.setBackgroundColor(context.resources.getColor(R.color.green))
                     }
                 }

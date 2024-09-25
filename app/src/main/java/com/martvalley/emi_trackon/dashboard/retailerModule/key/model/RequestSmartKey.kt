@@ -24,5 +24,6 @@ data class RequestSmartKey(
     val sign: String?,
     val tenure: Int?,
     val application_type: String?,
-    val application_serial_no: String?
+    val application_serial_no: String?,
+    val product_photo: String?
 )

@@ -30,6 +30,7 @@ object DeviceBasics {
     )
 
     data class location(
-        val coordinates: String
+        val coordinates: String,
+        val created_at: String
     )
 }

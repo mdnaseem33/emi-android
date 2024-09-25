@@ -14,6 +14,8 @@ import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.adapter.HomePagerAdapter
 import com.martvalley.emi_trackon.dashboard.adapter.VideoAdapter
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
+import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerActiveUsersActivity
+import com.martvalley.emi_trackon.dashboard.home.retailer.TotalRetailersActivity
 import com.martvalley.emi_trackon.dashboard.settings.report.ReportActivity
 import com.martvalley.emi_trackon.databinding.FragmentStatisticsBinding
 import com.martvalley.emi_trackon.utils.hide
@@ -36,6 +38,14 @@ class StatisticsFragment : Fragment() {
         binding.creditTransLayout.setOnClickListener {
             startActivity(Intent(requireContext(), ReportActivity::class.java))
         }
+        binding.totalUserLayout.setOnClickListener {
+            startActivity(Intent(context, TotalRetailersActivity::class.java))
+        }
+
+        binding.activeUserLayout.setOnClickListener {
+            startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
+        }
+
         callDashboardApi()
         return binding.root
     }

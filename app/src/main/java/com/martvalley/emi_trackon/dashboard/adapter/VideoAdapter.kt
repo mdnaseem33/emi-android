@@ -12,7 +12,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.YouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
-class VideoAdapter(private val context: Context, private val videoIds: List<YoutubeLink>) :
+class VideoAdapter(private val context: Context, var videoIds: List<YoutubeLink>) :
     RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
 
     inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -19,6 +19,7 @@ import com.martvalley.emi_trackon.login.Auth
 import com.martvalley.emi_trackon.login.LoginActivity
 import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.SharedPref
+import com.martvalley.emi_trackon.utils.loadImage
 import com.martvalley.emi_trackon.utils.openWhatsAppConversationUsingUri
 import com.martvalley.emi_trackon.utils.showApiErrorToast
 import retrofit2.Call
@@ -38,46 +39,36 @@ class RetailerSettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       // binding.report.img.setImageResource(R.drawable.report)
-        binding.msg.img.setImageResource(R.drawable.lock_messages)
+        binding.msg.img.setImageResource(R.drawable.img)
         binding.wallpaper.img.setImageResource(R.drawable.wallpaper_customize)
         binding.password.img.setImageResource(R.drawable.change_password)
         binding.profile.img.setImageResource(R.drawable.edit_profile)
         binding.logout.img.setImageResource(R.drawable.logout)
         binding.support.img.setImageResource(R.drawable.live_support_img)
-        //binding.audio.img.setImageResource(R.drawable.baseline_audio_file_24)
+        binding.loanPrefix.img.setImageResource(R.drawable.baseline_assured_workload_24)
 
-      //  binding.report.tv.text = "Report"
-        binding.msg.tv.text = "Lock Message"
+        binding.msg.tv.text = "Change Profile Image"
         binding.wallpaper.tv.text = "Wallpaper Customize"
         binding.password.tv.text = "Change Password"
         binding.profile.tv.text = "Edit Profile"
         binding.logout.tv.text = "Logout"
         binding.support.tv.text = "Live Support!"
+        binding.frp.tv.text = "Custom FRP Email"
+        binding.qrCode.tv.text = "Payment QR"
+        binding.loanPrefix.tv.text = "Loan Prefix"
+
         //binding.audio.tv.text = "Audio Customize"
-
-
-//        binding.support.root.setOnClickListener {
-//            context?.let { it1 -> openWhatsAppConversationUsingUri(it1, "+912269646511", "") }
-//        }
 
         binding.support.root.setOnClickListener {
             startActivity(Intent(requireContext(), ChatBotActivity::class.java))
         }
 
-        binding.report.root.setOnClickListener {
-            startActivity(Intent(requireContext(), ReportActivity::class.java))
-        }
         binding.msg.root.setOnClickListener {
-            startActivity(Intent(requireContext(), LockMessageActivity::class.java))
+            startActivity(Intent(requireContext(), ProfileImageActivity::class.java))
         }
         binding.wallpaper.root.setOnClickListener {
             startActivity(Intent(requireContext(), WallpaperCustomiseActivity::class.java))
         }
-
-//        binding.audio.root.setOnClickListener {
-//            startActivity(Intent(requireContext(), AudioCustomizeActivity::class.java))
-//        }
 
         binding.logout.root.setOnClickListener {
             SharedPref(requireContext()).clearSharedPreference()
@@ -90,6 +81,17 @@ class RetailerSettingFragment : Fragment() {
         }
         binding.profile.root.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
+        }
+
+        binding.frp.root.setOnClickListener {
+            startActivity(Intent(requireContext(), FrpEmailActivity::class.java))
+        }
+        binding.loanPrefix.root.setOnClickListener {
+            startActivity(Intent(requireContext(), LoanPrefixActivity::class.java))
+        }
+
+        binding.qrCode.root.setOnClickListener {
+            startActivity(Intent(requireContext(), PaymentQr::class.java))
         }
         callAuthApi()
     }
@@ -110,6 +112,7 @@ class RetailerSettingFragment : Fragment() {
                                 Glide.with(requireContext())
                                     .load(imageUrl)
                                     .into(binding.report.imageViewProfile);
+                                binding.msg.img.loadImage(imageUrl)
                             }
 
                         }
@@ -126,5 +129,10 @@ class RetailerSettingFragment : Fragment() {
 
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        callAuthApi()
     }
 }

@@ -1,5 +1,7 @@
 package com.martvalley.emi_trackon.dashboard.home
 
+import com.martvalley.emi_trackon.dashboard.people.user.User
+
 object Dashboard {
     data class RetailerResponse(
         val active_costomer: String,
@@ -19,6 +21,9 @@ object Dashboard {
         val total_retailer: Int
     )
 
+    data class YoutbeLinksResponse(
+        val youtubeLinks: List<YoutubeLink>
+    )
 
     /*------------------------- distributor ---------------------------------*/
 
@@ -133,6 +138,7 @@ object Dashboard {
         val emi_months: Int,
         val first_intallment_date: String,
         val id: Int,
+        val key_type: Int?,
         val image: Any,
         val imei1: String,
         val imei2: String,
@@ -175,6 +181,7 @@ object Dashboard {
         val deleted_at: Any,
         val emi_amount: Int,
         val emi_months: Int,
+        val key_type: Int?,
         val first_intallment_date: String,
         val id: Int,
         val image: Any,
@@ -197,7 +204,7 @@ object Dashboard {
 
     data class ActiveRetailerListResponse(
         val active_costomer: Int,
-        val active_costomer_list: ArrayList<ActiveCostomerr>
+        val active_costomer_list: ArrayList<User.Customer>
     )
 
     data class ActiveCostomerr(
@@ -209,11 +216,12 @@ object Dashboard {
         val deleted_at: Any,
         val emi_amount: Int,
         val emi_months: Int,
+        val key_type: Int?,
         val first_intallment_date: String,
         val id: Int,
         val image: String,
-        val imei1: Int,
-        val imei2: Int,
+        val imei1: String,
+        val imei2: String,
         val last_sync: String,
         val model: String,
         val name: String,

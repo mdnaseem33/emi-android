@@ -133,7 +133,7 @@ class UserViewActivity : AppCompatActivity() {
         }
 
 //        binding.statusBtn.setOnClickListener {
-//            if (binding.statusBtn.text != "Surrendered") {
+//            if (binding.statusBtn.text != "Removed") {
 //                callChangeStatusApi(
 //                    data.id.toString(),
 //                    data.status.toString()
@@ -160,7 +160,7 @@ class UserViewActivity : AppCompatActivity() {
                             user.status = status_value
                             statuschanged = true
                             binding.statusBtn.text = when (user.status) {
-                                0 -> "Surrendered"
+                                0 -> "Removed"
                                 1 -> "active"
                                 else -> ""
                             }

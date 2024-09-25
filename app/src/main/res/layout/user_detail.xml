@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="@id/name_tv"
         app:layout_constraintStart_toEndOf="@id/name_tv"
         app:layout_constraintTop_toTopOf="@id/name_tv"
-        tools:text="Vikas" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/p_no_tv"
@@ -57,13 +57,12 @@
         app:layout_constraintBottom_toBottomOf="@id/p_no_tv"
         app:layout_constraintStart_toEndOf="@id/p_no_tv"
         app:layout_constraintTop_toTopOf="@id/p_no_tv"
-        tools:text="9811112347" />
+        tools:text="" />
 
     <ImageView
         android:id="@+id/bankImage"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:src="@drawable/hdfc_images"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toTopOf="@+id/div1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -162,7 +161,7 @@
 
     <TextView
         android:id="@+id/model_value_tv"
-        android:layout_width="0dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/_5sdp"
         android:ellipsize="end"
@@ -171,7 +170,7 @@
         android:maxWidth="@dimen/_85sdp"
         android:maxLines="2"
         android:layout_marginStart="5dp"
-        android:text="@string/_1710412051"
+        android:text=""
         android:textColor="@color/blue"
         android:textSize="@dimen/_11sdp"
         app:layout_constraintBottom_toBottomOf="@+id/model_tv"
@@ -196,7 +195,6 @@
         android:layout_width="50dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
-        android:src="@drawable/oppo_logo"
         app:layout_constraintStart_toEndOf="@+id/type"
         app:layout_constraintTop_toTopOf="@+id/type"
         app:layout_constraintBottom_toBottomOf="@+id/type"
@@ -225,13 +223,13 @@
         app:layout_constraintStart_toEndOf="@+id/model"
         app:layout_constraintTop_toTopOf="@+id/model"
         app:layout_constraintBottom_toBottomOf="@+id/model"
-        tools:text="SmartKey" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/productType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/product_type_nmobile"
+        android:text=""
         android:textColor="@color/blue"
         android:textSize="@dimen/_12sdp"
         android:textStyle="bold"
@@ -269,17 +267,17 @@
             tools:ignore="SmallSp" />
 
         <TextView
+            android:id="@+id/referenceName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_700"
-            android:textSize="12sp"
-            android:text="@string/name"/>
+            android:textSize="12sp"/>
         <TextView
+            android:id="@+id/referPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/purple_700"
-            android:textSize="12sp"
-            android:text="@string/mobile_number"/>
+            android:textSize="12sp"/>
 
 
     </LinearLayout>
@@ -311,7 +309,7 @@
         app:layout_constraintBottom_toBottomOf="@id/sync_tv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/sync_tv"
-        android:text="1 days ago" />
+        android:text="" />
 
 
 

@@ -46,7 +46,7 @@ class ControlsActivity : AppCompatActivity() {
 
         binding.device.txt.text = "Device"
         binding.reminder.txt.text = "Reminder"
-        binding.aggrement.txt.text = "Aggrement"
+        binding.aggrement.txt.text = "Agreement"
 
         binding.device.divider.show()
         binding.reminder.divider.invisible()

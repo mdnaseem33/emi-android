@@ -117,7 +117,13 @@ class TotalRetailersActivity : AppCompatActivity() {
     private fun filterList(key: String) {
         val filter_list = ArrayList<User.Customer>()
         list.forEach {
-            if (it.name.lowercase().contains(key)) {
+            if (it.name != null && it.name.lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if (it.id != null && it.id.toString().lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if (it.phone != null && it.phone.lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if ( it.imei1 != null && it.imei1.lowercase().contains(key)) {
                 filter_list.add(it)
             }
         }

@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.martvalley.emi_trackon.R
@@ -18,6 +20,7 @@ import com.martvalley.emi_trackon.dashboard.people.user.MoreOption
 import com.martvalley.emi_trackon.dashboard.people.user.MoreOptionFragment
 import com.martvalley.emi_trackon.dashboard.people.user.User
 import com.martvalley.emi_trackon.dashboard.people.user.UserAdapter
+import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.dashboard.people.user.UserViewActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.user.UserData
 import com.martvalley.emi_trackon.dashboard.retailerModule.user.adapter.UserListAdapter
@@ -49,6 +52,43 @@ class UserListFragment : Fragment() {
                 }
             }
         }
+    private var filter_action = false
+    private var filter_removed = false
+    private var filter_pending = false
+
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(view.context, view)
+        popupMenu.inflate(R.menu.filter_customer)
+// Set initial checked states
+        popupMenu.getMenu().findItem(R.id.active).setChecked(filter_action);
+        popupMenu.getMenu().findItem(R.id.pending).setChecked(filter_pending);
+        popupMenu.getMenu().findItem(R.id.removed).setChecked(filter_removed);
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.active -> {
+                    filter_action = !filter_action
+                    menuItem.setChecked(filter_action)
+                    filterList("")
+                    false
+                }
+                R.id.pending -> {
+                    filter_pending = !filter_pending
+                    menuItem.setChecked(filter_pending)
+                    filterList("")
+                    false
+                }
+                R.id.removed -> {
+                    filter_removed = !filter_removed
+                    menuItem.setChecked(filter_removed)
+                    filterList("")
+                    false
+                }
+                else -> false
+            }
+
+        }
+        popupMenu.show()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,46 +101,9 @@ class UserListFragment : Fragment() {
         binding.userListRecyler.apply {
             layoutManager = LinearLayoutManager(requireContext())
         }
-//
-//        userListAdapter.diffUtilList.submitList(UserData.loadData())
-//        adapter = UserAdapter(list, this) { data, action, pos ->
-//            when (action) {
-////                "action" -> callChangeStatusApi(data.id.toString(), data.status.toString(), pos)
-//                "more" -> {
-//                    MoreOptionFragment().apply {
-//                        innterface = object : MoreOption {
-//                            override fun view() {
-//                                vieww.launch(
-//                                    Intent(
-//                                        requireContext(),
-//                                        UserViewActivity::class.java
-//                                    ).putExtra("id", data.id)
-//                                )
-//                                dismiss()
-//                            }
-//
-//                            override fun control() {
-//                            }
-//
-//                            override fun delete() {
-//                                withNetwork { callDeleteApi(data.id.toString(), pos) }
-//                                dismiss()
-//                            }
-//
-//                        }
-//                    }.show(supportFragmentManager, "")
-//                }
-//                "control" -> {
-//                    startActivity(
-//                        Intent(
-//                            this,
-//                            ControlsActivity::class.java
-//                        ).putExtra("id", data.id)
-//                    )
-//                }
-//            }
-//
-//        }
+        binding.moreOption.setOnClickListener {
+            showPopupMenu(binding.moreOption)
+        }
         adapter = UserAdapter(list, requireContext()) { data, action, pos ->
             when (action) {
 //                "action" -> callChangeStatusApi(data.id.toString(), data.status.toString(), pos)
@@ -146,7 +149,7 @@ class UserListFragment : Fragment() {
 //            adapter.mList = list
 //            adapter.notifyDataSetChanged()
 //        }
-
+        binding.searchEt.text.clear()
         binding.searchEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -162,18 +165,34 @@ class UserListFragment : Fragment() {
         })
 
         withNetwork { callApi() }
-
         return binding.root
     }
 
     private fun filterList(key: String) {
         val filter_list = ArrayList<User.Customer>()
         list.forEach {
-            if (it.name.lowercase().contains(key)) {
+            if(filter_action || filter_removed || filter_pending){
+                if (!filter_action && it.is_link == "1" && it.status == 1){
+                    return@forEach
+                }
+                if (!filter_removed && it.status == 0){
+                    return@forEach
+                }
+                if (!filter_pending && it.is_link == "0"){
+                    return@forEach
+                }
+            }
+            if (it.name != null && it.name.lowercase().contains(key)) {
                 filter_list.add(it)
-            }else if (it.id.toString().lowercase().contains(key)) {
+            }else if (it.id != null && it.id.toString().lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if (it.phone != null && it.phone.lowercase().contains(key)) {
+                filter_list.add(it)
+            }else if ( it.imei1 != null && it.imei1.lowercase().contains(key)) {
                 filter_list.add(it)
             }
+
+
         }
         adapter.mList = filter_list
         adapter.notifyDataSetChanged()
@@ -194,6 +213,7 @@ class UserListFragment : Fragment() {
                             list.clear()
                             list.addAll(it.customer)
                             adapter.notifyDataSetChanged()
+                            filterList("")
                         }
                     }
                     else -> {

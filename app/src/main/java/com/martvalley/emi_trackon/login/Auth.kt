@@ -23,6 +23,9 @@ object Auth {
         val qr_id: String,
         val message: String,
         var wallpaper: String,
+        var payment_qr: String,
+        val frp_email: String?,
+        var loan_prefix: String,
         val sign: String,
         val audio: String,
     )

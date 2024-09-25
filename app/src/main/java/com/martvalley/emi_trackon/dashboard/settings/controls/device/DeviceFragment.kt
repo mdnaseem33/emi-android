@@ -1,19 +1,27 @@
 package com.martvalley.emi_trackon.dashboard.settings.controls.device
 
 import android.app.AlertDialog
+import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +53,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 
 class DeviceFragment : Fragment() {
@@ -98,6 +109,7 @@ class DeviceFragment : Fragment() {
         list3.add(Control.DeviceActionOld(sm = "location", display = "Location", value = false, "list3"))
         list3.add(Control.DeviceActionOld(sm = "call_list", display = "Call List", value = false, "list3"))
         list3.add(Control.DeviceActionOld(sm = "mobile_no", display = "Mobile No.", value = false, "list3"))
+        list3.add(Control.DeviceActionOld(sm = "online_check", display = "Online", value = false, "list3"))
         list3.add(Control.DeviceActionOld(sm = "sr", display = "Soft Reset", value = true, "list1"))
         list3.add(Control.DeviceActionOld(sm = "debug", display = "Debugging", value = false, "list1"))
         list3.add(
@@ -320,13 +332,6 @@ class DeviceFragment : Fragment() {
         }
     }
 
-
-
-
-
-
-
-
     private fun callSubmitActionApi(wall: Boolean) {
 
         val jsonData = convertToJson(list1, list3)
@@ -351,6 +356,7 @@ class DeviceFragment : Fragment() {
                 call: Call<Control.ActionUpdateResponse>,
                 response: Response<Control.ActionUpdateResponse>
             ) {
+                response.logd("data action response")
                 binding.pb.hide()
                 when (response.code()) {
                     200 -> {
@@ -368,6 +374,7 @@ class DeviceFragment : Fragment() {
             override fun onFailure(
                 call: Call<Control.ActionUpdateResponse>, t: Throwable
             ) {
+                t.logd("data action response")
                 binding.pb.hide()
                 context?.showApiErrorToast()
             }
@@ -392,15 +399,6 @@ class DeviceFragment : Fragment() {
                     200 -> {
                         response.body()?.let {
                             showToast("Wallpaper Updated Succussfully")
-                            response.logd("response")
-                            /////////////
-//                            if (response.message().contains("updated")){
-//                                list2.add(Control.DeviceActionOld(sm = "", display = "Wallpaper", value = true, "list2"))
-//                            } else {
-//                                list2.add(Control.DeviceActionOld(sm = "", display = "Wallpaper", value = false, "list2"))
-//                            }
-//                            setAdapter(list2)
-                            /////////////////
                             callSubmitActionApi(true)
                         }
                     }
@@ -420,8 +418,6 @@ class DeviceFragment : Fragment() {
 
         })
     }
-
-
 
     private fun callSetAudioApi() {
         binding.pb.show()
@@ -513,22 +509,25 @@ class DeviceFragment : Fragment() {
         binding.userDetail.apply {
             nameValueTv.text = data.name
             pNoValueTv.text = data.phone
-            if (model != null) {
-                modelValueTv.text = model
+            binding.userDetail.modelValueTv.text = data.imei1
+            binding.userDetail.nameValueTv.text = data.name
+            binding.userDetail.pNoValueTv.text = data.phone
+            if (data.brand != null){
+                modelImage.loadImage(Constants.BASEURL + data.brand.image)
+            }
+            if(data.bank != null){
+
+                bankImage.loadImage(Constants.BASEURL + data.bank!!.image)
             }
 
-
-            data.imei1?.let {
-                imei1Tv.text = "IMEI 1 : " + it
+            productType.text = data.application_type
+            modelText.text = data.model
+            if (data.reference_name != null){
+                referenceName.text = "Name: " + data.reference_name
             }
-
-            data.imei2?.let {
-                imei2Tv.text = "IMEI 2 : " + it
+            if (data.reference_number != null){
+                referPhone.text = "Phone: " + data.reference_number
             }
-
-
-
-
             // date.text = data.created_at.convertISOTimeToDate()
             if (gotTheRefreshedDate) {
                 syncValueTv.text = getCurrentDate()
@@ -541,9 +540,37 @@ class DeviceFragment : Fragment() {
 
             if (!data.image.isNullOrEmpty()) {
                 binding.userimg.loadImage(Constants.BASEURL + "storage/" + data.image)
+                binding.userimg.setOnClickListener {
+                    showImagePopUp(Constants.BASEURL + "storage/" + data.image)
+                }
             }
         }
 
+    }
+    private fun showImagePopUp(imageUrl: String) {
+        // Inflate the popup layout
+        val inflater = requireContext().getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = inflater.inflate(R.layout.pop_image_view, null)
+
+        // Create the PopupWindow
+        val popupWindow = PopupWindow(popupView,
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT)
+
+        // Find the ImageView in the popup layout
+        val imageView = popupView.findViewById<ImageView>(R.id.dialog_image_view)
+
+        // Set an image resource or bitmap
+        imageView.loadImage(imageUrl)
+
+        // Show the PopupWindow
+        popupWindow.showAtLocation(binding.userimg,
+            Gravity.CENTER, 0, 0)
+
+        // Set a dismiss listener for when the popup is outside clicked
+        popupView.setOnClickListener {
+            popupWindow.dismiss()
+        }
     }
 
     fun getModelFromJson(jsonString: String): String? {
@@ -556,6 +583,19 @@ class DeviceFragment : Fragment() {
         return null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun isLastSyncOlderThanTenMinutes(lastSync: String): Boolean {
+        // Parse the last_sync time
+        val lastSyncTime = OffsetDateTime.parse(lastSync, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+
+        // Get the current time
+        val currentTime = OffsetDateTime.now()
+
+        // Calculate the difference in minutes
+        val minutesDifference = ChronoUnit.MINUTES.between(lastSyncTime, currentTime)
+        Log.d("minutesDifference", minutesDifference.toString())
+        return minutesDifference < 10
+    }
 
     private fun callGetUserApi() {
         binding.pb.show()
@@ -573,7 +613,21 @@ class DeviceFragment : Fragment() {
                             (requireActivity() as ControlsActivity).cust_data = it
                             setUserData(it.customer)
 
-                            Log.d("data", it.customer.toString())
+                            try {
+                                if(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && it.customer.last_sync != null) {
+                                        isLastSyncOlderThanTenMinutes(it.customer.last_sync)
+                                    } else {
+                                        false
+                                    }
+                                ){
+                                    list3.forEachIndexed { i, it ->
+                                        if (it.sm == "online_check") {
+                                            list3[i].value = true
+                                        }
+                                    }
+                                }
+                            }catch (e: Exception){
+                            }
                             if( it.customer.is_set_wallpaper == "1"){
                                 it.action.swd.value = true
                             }else{
@@ -638,7 +692,6 @@ class DeviceFragment : Fragment() {
         val iter: Iterator<String> = json.keys()
         while (iter.hasNext()) {
             val key = iter.next()
-            key.logd("actionData123")
             try {
                 val value = json.get(key) as JSONObject
                 if (arrayListOf("fr" ,"debug","uftd").contains(key)) {
@@ -813,22 +866,18 @@ class DeviceFragment : Fragment() {
                                         val jsonObject = JSONObject(i.coordinates)
                                         val latitude = jsonObject.getDouble("lat")
                                         val longitude = jsonObject.getDouble("long")
-
+                                        i.logd("jsonObject")
                                         locList.addAll(
                                             listOf(
                                                 LocationData(
                                                     latitude,
-                                                    longitude
+                                                    longitude,
+                                                    i.created_at
                                                 )
                                             )
                                         )
                                         locationLisRecylerview =
                                             LocationLisRecylerview(requireContext(), locList)
-                                        //locationLisRecylerview.mlist = locList
-
-                                        // Do something with latitude and longitude values
-                                        Log.d("ReceentCh", latitude.toString())
-                                        Log.d("ReceentCh", longitude.toString())
                                     } catch (e: Exception) {
                                         e.printStackTrace()
                                     }

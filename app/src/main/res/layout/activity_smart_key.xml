@@ -42,6 +42,7 @@
             app:layout_constraintTop_toTopOf="@+id/view1" />
 
         <ImageView
+            android:visibility="invisible"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="15dp"
@@ -100,14 +101,6 @@
                             android:textColor="@color/create_user_grey"
                             android:textSize="10sp" />
 
-                        <ImageView
-                            android:id="@+id/editImageView"
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:contentDescription="@string/edit_button"
-                            android:src="@drawable/edit_blue" />
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
 
@@ -220,6 +213,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/keyStep2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -315,6 +309,7 @@
                             android:layout_marginTop="10dp" />
 
                         <CheckBox
+                            android:visibility="gone"
                             android:id="@+id/Referencecheckbox"
                             android:layout_width="wrap_content"
                             android:layout_height="20dp"
@@ -336,7 +331,6 @@
                             android:inputType="textCapWords"
                             android:maxLength="10"
                             android:maxLines="1"
-                            android:visibility="gone"
                             android:paddingHorizontal="10dp"
                             android:textSize="14sp" />
 
@@ -351,7 +345,6 @@
                             android:inputType="textCapWords"
                             android:maxLength="10"
                             android:maxLines="1"
-                            android:visibility="gone"
                             android:layout_marginBottom="10dp"
                             android:paddingHorizontal="10dp"
                             android:textSize="14sp" />
@@ -407,7 +400,7 @@
                             android:layout_marginTop="15dp"
                             android:autofillHints="Name"
                             android:background="@drawable/text_key_radius_grey"
-                            android:hint="@string/loan_amount"
+                            android:hint="Emi Amount"
                             android:inputType="number"
                             android:maxLines="1"
                             android:paddingHorizontal="10dp"
@@ -423,6 +416,7 @@
                             android:text="@string/how_do_you_want_to_collect_this_amount"/>
 
                         <RadioGroup
+                            android:visibility="gone"
                             android:id="@+id/radioGroup"
                             android:orientation="horizontal"
                             android:weightSum="2"
@@ -446,6 +440,12 @@
                                 android:text="@string/one_time_payment"
                                 android:textStyle="bold"/>
                         </RadioGroup>
+                        <TextView
+                            android:id="@+id/totalEmi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Total Loan Amount: ₹0.00"
+                            />
                         <LinearLayout
                             android:id="@+id/emiSection"
                             android:orientation="vertical"
@@ -475,22 +475,37 @@
                                 android:layout_marginTop="10dp"
                                 android:textColor="@color/black"
                                 android:text="@string/how_many_installments"/>
-
-                            <EditText
-                                android:id="@+id/numberOfInstallments"
+                            <Spinner
+                                android:id="@+id/numberOfInstallmentsBtn"
                                 android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:layout_marginTop="10dp"
+                                android:layout_height="wrap_content"
                                 android:background="@drawable/scan_blue_background"
-                                android:drawableStart="@drawable/baseline_account_balance_wallet_24"
-                                android:gravity="start|center"
-                                android:paddingHorizontal="@dimen/_10sdp"
-                                android:hint="@string/number_of_installments"
-                                android:textColorHint="@color/purple_700"
-                                android:drawablePadding="10dp"
-                                android:inputType="number"
-                                android:textColor="@color/purple_700"
-                                android:drawableTint="@color/purple_700"/>
+                                android:drawableStart="@drawable/retry_black"
+                                android:layout_marginTop="10dp" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/black"
+                                android:text="@string/number_of_installments"/>
+<!--                            <EditText-->
+<!--                                android:id="@+id/numberOfInstallments"-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="50dp"-->
+<!--                                android:layout_marginTop="10dp"-->
+<!--                                android:background="@drawable/scan_blue_background"-->
+<!--                                android:drawableStart="@drawable/baseline_account_balance_wallet_24"-->
+<!--                                android:gravity="start|center"-->
+<!--                                android:paddingHorizontal="@dimen/_10sdp"-->
+<!--                                android:hint="@string/number_of_installments"-->
+<!--                                android:textColorHint="@color/purple_700"-->
+<!--                                android:drawablePadding="10dp"-->
+<!--                                android:inputType="number"-->
+<!--                                android:textColor="@color/purple_700"-->
+<!--                                android:drawableTint="@color/purple_700"/>-->
 
                             <TextView
                                 android:layout_width="match_parent"
@@ -527,6 +542,53 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/keyStep4">
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/signCardView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginTop="10dp"
+                        android:elevation="12dp"
+                        android:padding="20dp"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/photCardView">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="20dp">
+
+                            <ImageView
+                                android:id="@+id/signChecked"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:src="@drawable/checked_grey" />
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="20dp"
+                                android:layout_toEndOf="@+id/signChecked"
+                                android:text="@string/customer_signature"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+
+                            <TextView
+                                android:id="@+id/signText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:text="@string/add"
+                                android:textColor="@color/purple_700"
+                                android:textSize="16sp" />
+
+                        </RelativeLayout>
+                    </androidx.cardview.widget.CardView>
                     <androidx.cardview.widget.CardView
                         android:id="@+id/photCardView"
                         android:layout_width="match_parent"
@@ -576,17 +638,18 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/signCardView"
+                        android:id="@+id/productCardView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="8dp"
                         android:elevation="12dp"
                         android:padding="20dp"
                         app:cardCornerRadius="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/photCardView">
+                        app:layout_constraintTop_toBottomOf="@+id/referCardView">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -594,7 +657,7 @@
                             android:padding="20dp">
 
                             <ImageView
-                                android:id="@+id/signChecked"
+                                android:id="@+id/productChecked"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:src="@drawable/checked_grey" />
@@ -605,14 +668,14 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="20dp"
-                                android:layout_toEndOf="@+id/signChecked"
-                                android:text="@string/customer_signature"
+                                android:layout_toEndOf="@+id/productChecked"
+                                android:text="Product Image"
                                 android:textColor="@color/black"
                                 android:textSize="16sp" />
 
 
                             <TextView
-                                android:id="@+id/signText"
+                                android:id="@+id/productText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
@@ -815,6 +878,7 @@
 
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
+
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -885,4 +949,8 @@
             android:text="" />
 
     </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </RelativeLayout>

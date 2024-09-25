@@ -26,25 +26,25 @@ class KeyMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_key_main)
-        withNetwork { getCreateData() }
+        //withNetwork { getCreateData() }
     }
 
-    private fun getCreateData(){
-        val call = RetrofitInstance.apiService.getCustomerCreateData()
-        call.enqueue(object : Callback<CreateCustomerData> {
-            override fun onResponse(
-                p0: Call<CreateCustomerData>,
-                p1: Response<CreateCustomerData>
-            ) {
-                createCustomerData = p1.body()
-            }
-
-            override fun onFailure(p0: Call<CreateCustomerData>, p1: Throwable) {
-                TODO("Not yet implemented")
-            }
-
-        })
-    }
+//    private fun getCreateData(){
+//        val call = RetrofitInstance.apiService.getCustomerCreateData()
+//        call.enqueue(object : Callback<CreateCustomerData> {
+//            override fun onResponse(
+//                p0: Call<CreateCustomerData>,
+//                p1: Response<CreateCustomerData>
+//            ) {
+//                createCustomerData = p1.body()
+//            }
+//
+//            override fun onFailure(p0: Call<CreateCustomerData>, p1: Throwable) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
+//    }
 
 
 

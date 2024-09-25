@@ -1,8 +1,16 @@
 package com.martvalley.emi_trackon.dashboard.settings.controls.aggrement
 
 import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Typeface
+import android.graphics.pdf.PdfDocument
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
@@ -11,6 +19,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.martvalley.emi_trackon.MainApplication
 import com.martvalley.emi_trackon.dashboard.settings.controls.ControlsActivity
@@ -18,6 +29,9 @@ import com.martvalley.emi_trackon.databinding.FragmentAggrementBinding
 import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.loadImage
 import com.rajat.pdfviewer.PdfViewerActivity
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class AggrementFragment : Fragment() {
@@ -49,10 +63,70 @@ class AggrementFragment : Fragment() {
 
         binding.creditBtn.setOnClickListener {
             //launchPdf()
-            loadAgreement()
+            binding.aggrementLinear.saveAsPdf("agreement")
         }
 
+    }
+    private fun View.toBitmap(): Bitmap {
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        draw(canvas)
+        return bitmap
+    }
 
+    private fun notifyUser(filePath: String) {
+        val notificationManager = requireContext().getSystemService( NotificationManager::class.java)
+
+        val notificationBuilder = NotificationCompat.Builder(requireContext(), "pdf_channel")
+            .setSmallIcon(android.R.drawable.ic_dialog_info)
+            .setContentTitle("PDF Saved")
+            .setContentText("Your PDF file has been saved at: $filePath")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+
+        notificationManager!!.notify(1, notificationBuilder.build())
+    }
+
+    private fun View.saveAsPdf(fileName: String) {
+        // Create a PdfDocument
+        val pdfDocument = PdfDocument()
+
+        // Create a page description
+        val pageInfo = PdfDocument.PageInfo.Builder(width, height, 1).create()
+        val page = pdfDocument.startPage(pageInfo)
+
+        // Draw the view on the page's canvas
+        val canvas = page.canvas
+        val bitmap = this.toBitmap()
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+
+        // Finish the page
+        pdfDocument.finishPage(page)
+
+        // Save the PDF document
+        val pdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "$fileName.pdf")
+
+        try {
+            pdfDocument.writeTo(FileOutputStream(pdfFile))
+            notifyUser(pdfFile.absolutePath) // Notify user about the saved PDF
+            downloadPdf(pdfFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            pdfDocument.close()
+        }
+    }
+
+    private fun downloadPdf(file: File) {
+        val fileUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.fileprovider", file)
+
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(fileUri, "application/pdf")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // Grant permission to read
+            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY) // Optional: to prevent history tracking
+        }
+
+        startActivity(Intent.createChooser(intent, "Open PDF"))
     }
 
     private fun String.getMonth(): String {

@@ -52,12 +52,28 @@ object Settings {
     data class SaveWallpaperRequest(
         var wallpaper: String
     )
+    data class SaveProfileRequest(
+        var image: String
+    )
 
     data class SaveWallpaperResponse(
         val message: String,
         val retailer: Auth.AuthResponse,
         val status: Int
     )
+
+    data class SavePaymentRequest(
+        var payment_qr: String
+    )
+
+    data class SaveFrpEmailRequest(
+        var frp_email: String
+    )
+
+    data class SaveLoanPrefixRequest(
+        var loan_prefix: String
+    )
+
 
     data class Retailer(
         val address: String,
