@@ -33,6 +33,18 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".dashboard.retailerModule.fragments.AllTransactionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dashboard.retailerModule.NotificationViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dashboard.retailerModule.UpcomingEmiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dashboard.retailerModule.WhatsNewActivity"
+            android:exported="false" />
+        <activity
             android:name=".dashboard.settings.retail.LoanPrefixActivity"
             android:exported="false" />
         <activity
@@ -74,17 +86,16 @@
             android:exported="false"
             android:screenOrientation="portrait" />
 
-
-
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.martvalley.emi_trackon.fileprovider"
+            android:authorities="com.emitrackon.emi_trackon.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".dashboard.settings.controls.device.ViewUsersDetailActivity"
             android:exported="false"

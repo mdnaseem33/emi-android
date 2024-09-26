@@ -352,7 +352,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:id="@+id/keyStep3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -405,15 +404,6 @@
                             android:maxLines="1"
                             android:paddingHorizontal="10dp"
                             android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginStart="5dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/black"
-                            android:text="@string/how_do_you_want_to_collect_this_amount"/>
 
                         <RadioGroup
                             android:visibility="gone"
@@ -483,14 +473,6 @@
                                 android:drawableStart="@drawable/retry_black"
                                 android:layout_marginTop="10dp" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textStyle="bold"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginTop="10dp"
-                                android:textColor="@color/black"
-                                android:text="@string/number_of_installments"/>
 <!--                            <EditText-->
 <!--                                android:id="@+id/numberOfInstallments"-->
 <!--                                android:layout_width="match_parent"-->

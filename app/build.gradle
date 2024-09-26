@@ -23,11 +23,11 @@ afterEvaluate {
 }
 
 android {
-    namespace 'com.martvalley.emi_trackon'
+    namespace 'com.emitrackon.emi_trackon'
     compileSdk 35
 
     defaultConfig {
-        applicationId "com.martvalley.emi_trackon"
+        applicationId "com.emitrackon.emi_trackon"
         minSdk 24
         targetSdk 35
         versionCode 3

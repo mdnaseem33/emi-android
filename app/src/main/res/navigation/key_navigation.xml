@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashKeyFragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.SplashKeyFragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.SplashKeyFragment"
         android:label="fragment_splash_key"
         tools:layout="@layout/fragment_splash_key" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/addCustomerStep1Fragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomerStep1Fragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomerStep1Fragment"
         android:label="fragment_add_customer_step1"
         tools:layout="@layout/fragment_add_customer_step1" >
         <action
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/addCustomer2Fragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomer2Fragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomer2Fragment"
         android:label="fragment_add_customer2"
         tools:layout="@layout/fragment_add_customer2" >
         <action
@@ -38,7 +38,7 @@
     </fragment>
     <fragment
         android:id="@+id/addCustomer3Fragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomer3Fragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.AddCustomer3Fragment"
         android:label="fragment_add_customer3"
         tools:layout="@layout/fragment_add_customer3" >
         <action
@@ -47,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/addPhotoDocFragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.AddPhotoDocFragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.AddPhotoDocFragment"
         android:label="fragment_add_photo_doc"
         tools:layout="@layout/fragment_add_photo_doc" >
         <action
@@ -56,12 +56,12 @@
     </fragment>
     <fragment
         android:id="@+id/registeredFragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.RegisteredFragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.RegisteredFragment"
         android:label="fragment_registered"
         tools:layout="@layout/fragment_registered" />
     <fragment
         android:id="@+id/udharFragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.UdharFragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.UdharFragment"
         android:label="fragment_udhar"
         tools:layout="@layout/fragment_udhar" >
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/udaar2Fragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.Udaar2Fragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.Udaar2Fragment"
         android:label="fragment_udaar2"
         tools:layout="@layout/fragment_udaar2" >
         <action
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/udhar3Fragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.Udhar3Fragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.key.fragments.Udhar3Fragment"
         android:label="fragment_udhar3"
         tools:layout="@layout/fragment_udhar3" />
 </navigation>

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/userDetailHomeFragment"
-        android:name="com.martvalley.emi_trackon.dashboard.retailerModule.user.fragments.UserDetailHomeFragment"
+        android:name="com.emitrackon.emi_trackon.dashboard.retailerModule.user.fragments.UserDetailHomeFragment"
         android:label="fragment_user_detail_home"
         tools:layout="@layout/fragment_user_detail_home" />
 </navigation>

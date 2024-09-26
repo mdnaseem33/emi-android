@@ -73,12 +73,12 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/send_remainder"
-                android:layout_width="@dimen/_70sdp"
+                android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/reminder_text"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Send \nReminder"
+                android:text="Reminder"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_8sdp"
