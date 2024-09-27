@@ -1,11 +1,13 @@
 package com.emitrackon.emi_trackon.login
 
+import com.google.gson.annotations.SerializedName
+
 object Login {
 
     data class LoginRequest(
-        val email: String,
-        val password: String,
-        val role: Int
+        @SerializedName("email") val email: String,
+        @SerializedName("password") val password: String,
+        @SerializedName("role") val role: Int
     )
 
     data class LoginResponse(

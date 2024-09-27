@@ -2,9 +2,11 @@ package com.emitrackon.emi_trackon.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.emitrackon.emi_trackon.api.RetrofitInstance
+import com.emitrackon.emi_trackon.dashboard.DashboardActivity
 import com.emitrackon.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.emitrackon.emi_trackon.databinding.ActivityLoginBinding
 import com.emitrackon.emi_trackon.forgot_pass.ForgotPasswordActivity
@@ -18,6 +20,7 @@ import com.emitrackon.emi_trackon.utils.show
 import com.emitrackon.emi_trackon.utils.showApiErrorToast
 import com.emitrackon.emi_trackon.utils.showToast
 import com.emitrackon.emi_trackon.utils.withNetwork
+import com.google.gson.Gson
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -81,7 +84,7 @@ class LoginActivity : AppCompatActivity() {
         val role = if (selected == Constants.RETAILER) 3 else 2
 
         val req = Login.LoginRequest(email, pass, role)
-
+        Log.d("RequestBody", Gson().toJson(req))
         val call = RetrofitInstance.apiService.loginApi(req)
         call.enqueue(object : Callback<Login.LoginResponse> {
             override fun onResponse(
@@ -97,14 +100,15 @@ class LoginActivity : AppCompatActivity() {
                             SharedPref(this@LoginActivity).save(Constants.ROLE, role)
                             SharedPref(this@LoginActivity).save(Constants.EMAIL, email)
 
-                            val intent = Intent(this@LoginActivity, DashBoardNewActivity::class.java)
-                            startActivity(intent)
 
-//                            if (selected == Constants.RETAILER) {
-//                                startActivity(intent.putExtra("type", "r"))
-//                            } else {
-//                                startActivity(intent.putExtra("type", "d"))
-//                            }
+
+                            if (selected == Constants.RETAILER) {
+                                val intent = Intent(this@LoginActivity, DashBoardNewActivity::class.java)
+                                startActivity(intent)
+                            } else {
+                                val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                                startActivity(intent)
+                            }
                             finish()
                         }
                     }

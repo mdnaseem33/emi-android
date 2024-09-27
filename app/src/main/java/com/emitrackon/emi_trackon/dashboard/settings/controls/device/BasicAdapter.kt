@@ -293,23 +293,24 @@ class BasicAdapter(
                 }
             }
             binding.tvText.text = data.display
-
-
             itemView.setOnClickListener {
-                data.value = !data.value
-                notifyItemChanged(adapterPosition)
+                if(data.sm == "online_check"){
 
-                if (data.list == "list1") {
-                    listner(adapterPosition, "list1", data)
-                    Log.d("ListnerTrueFA", data.toString())
-
-                } else {
-                    listner(adapterPosition, data.display, data)
-                    Log.d("ListnerTrueFA", data.toString())
+                }else{
+                    data.value = !data.value
                 }
 
+                notifyItemChanged(absoluteAdapterPosition)
+
+                if (data.list == "list1") {
+                    listner(absoluteAdapterPosition, "list1", data)
+                } else {
+                    listner(absoluteAdapterPosition, data.display, data)
+                }
 
             }
+
+
         }
     }
 }

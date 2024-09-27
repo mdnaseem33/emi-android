@@ -31,7 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SplashActivity"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
+        tools:targetApi="35">
         <activity
             android:name=".dashboard.retailerModule.fragments.AllTransactionActivity"
             android:exported="false" />

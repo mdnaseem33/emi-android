@@ -21,7 +21,7 @@ object Constants {
     const val PROFILE_PIC = "PROFILE_PIC"
     const val NAME = "NAME"
     const val PROFILE_DATA = "USER_PROFILE_DATA"
-
+    const val DIST_TYPE = "distributor_type"
     const val IS_LOGGED_IN = "isLoggedIn"
 
     const val DEVICE_TOKEN = "DEVICE_TOKEN"

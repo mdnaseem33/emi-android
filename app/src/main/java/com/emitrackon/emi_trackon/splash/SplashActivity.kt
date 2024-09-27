@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import androidx.core.os.postDelayed
 import com.emitrackon.emi_trackon.R
+import com.emitrackon.emi_trackon.dashboard.DashboardActivity
 import com.emitrackon.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.emitrackon.emi_trackon.login.LoginActivity
 import com.emitrackon.emi_trackon.utils.Constants
@@ -29,7 +30,12 @@ class SplashActivity : AppCompatActivity() {
                 false
             ) == true
         ) {
-            startActivity(Intent(this, DashBoardNewActivity::class.java))
+            if (SharedPref(this@SplashActivity).getValueInt(Constants.ROLE) == 3) {
+                startActivity(Intent(this, DashBoardNewActivity::class.java))
+            }else{
+                startActivity(Intent(this, DashboardActivity::class.java))
+            }
+
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }

@@ -1,6 +1,7 @@
 package com.emitrackon.emi_trackon.dashboard.settings.controls.device
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -155,16 +156,12 @@ class DeviceFragment : Fragment() {
                     showLocationPopUp()
                 }
 
-//                "Lock" -> {
-//                    withNetwork { callRequestDevi
-//                    ceInfoApi("lock") }
-//                }
-
                 "facebook" -> {
                     withNetwork { callRequestDeviceInfoApi("facebook") }
                 }
 
                 "Mobile No." -> {
+                    withNetwork { callRequestDeviceInfoApi("mobile") }
                     showPhonePopUp()
                 }
 
@@ -318,15 +315,12 @@ class DeviceFragment : Fragment() {
         val dialogView = inflater.inflate(R.layout.phone_dialog_pop_up, null)
         val textView = dialogView.findViewById<TextView>(R.id.dialogTextView)
         textView.text = SharedPref(requireContext()).getValueString("UserPhoneNum")
-
+        callMobileApi(dialogView)
         dialogBuilder.setView(dialogView)
         dialogBuilder.setCancelable(true)
         val dialog = dialogBuilder.create()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.show()
-        dialog.setOnDismissListener {
-            withNetwork { callRequestDeviceInfoApi("mobile") }
-        }
     }
 
     private fun callSubmitActionApi(wall: Boolean) {
@@ -590,7 +584,6 @@ class DeviceFragment : Fragment() {
 
         // Calculate the difference in minutes
         val minutesDifference = ChronoUnit.MINUTES.between(lastSyncTime, currentTime)
-        Log.d("minutesDifference", minutesDifference.toString())
         return minutesDifference < 10
     }
 
@@ -871,16 +864,12 @@ class DeviceFragment : Fragment() {
                         } else {
 
                             response.body()?.let {
-                                Log.d("ReceentCh", response.toString())
-                                Log.d("ReceentCh", it.data.toString())
                                 locList.clear()
                                 for (i in it.data.location) {
-                                    Log.d("ReceentCh", i.toString())
                                     try {
                                         val jsonObject = JSONObject(i.coordinates)
                                         val latitude = jsonObject.getDouble("lat")
                                         val longitude = jsonObject.getDouble("long")
-                                        i.logd("jsonObject")
                                         locList.addAll(
                                             listOf(
                                                 LocationData(
@@ -896,37 +885,18 @@ class DeviceFragment : Fragment() {
                                         e.printStackTrace()
                                     }
                                 }
-                                //Log.d("ReceentCh", it.data.location.coordinates)
-//                                    .let {
-//                                    locList = it.replace("{", "").replace("}", "")
-//                                }
-//                                it.data.mobile?.let {
-//                                    binding.mobileValue.text =
-//                                        it.replace("null", "---").removeSuffix(",")
-//                                }
+
                                 it.data.call_list?.let {
 
                                 }
 
 
-//                                it.data.updated_at?.let {
-//                                    binding.time.text =
-//                                        "Last updated at : ${it.convertISOTimeToDateTime()}"
-//                                }
-
-//                                if (it.data.location.toString().contains("lat")) {
-//                                    binding.viewOnMap.show()
-//                                } else binding.viewOnMap.hide()
 
                             }
                         }
                     }
 
                     else -> {
-                        //progress.show()
-                        // requireContext().showApiErrorToast()
-                        Log.d("ReceentCh", response.message())
-                        Log.d("ReceentCh", response.toString())
                     }
                 }
             }
@@ -934,8 +904,48 @@ class DeviceFragment : Fragment() {
             override fun onFailure(
                 call: Call<DeviceBasics.GetDeviceInfo>, t: Throwable
             ) {
-                Log.d("ReceentCh", t.message.toString())
-                Log.d("ReceentCh", t.toString())
+            }
+
+        })
+    }
+
+    private fun callMobileApi(dialogView: View) {
+        val call = RetrofitInstance.apiService.getCustomerDeviceLastDataApi(
+            (requireActivity() as ControlsActivity).id.toString()
+        )
+        call.enqueue(object : Callback<DeviceBasics.GetDeviceInfo> {
+            override fun onResponse(
+                call: Call<DeviceBasics.GetDeviceInfo>,
+                response: Response<DeviceBasics.GetDeviceInfo>
+            ) {
+                binding.pb.hide()
+                when (response.code()) {
+                    200 -> {
+                        response.body()?.data?.mobile?.let {
+                            dialogView.findViewById<TextView>(R.id.currentPhoneNo).text = it
+                        }
+                        if (response.body()?.data == null) {
+
+                        } else {
+
+                            response.body()?.let {
+                                if(it.data.mobile != null){
+                                    dialogView.findViewById<TextView>(R.id.currentPhoneNo).text = it.data.mobile
+                                }else{
+                                    dialogView.findViewById<TextView>(R.id.currentPhoneNo).text = "No Data Found"
+                                }
+                            }
+                        }
+                    }
+
+                    else -> {
+                    }
+                }
+            }
+
+            override fun onFailure(
+                call: Call<DeviceBasics.GetDeviceInfo>, t: Throwable
+            ) {
             }
 
         })

@@ -1,5 +1,6 @@
 package com.emitrackon.emi_trackon.dashboard
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -8,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import com.emitrackon.emi_trackon.MainApplication
 import com.emitrackon.emi_trackon.R
 import com.emitrackon.emi_trackon.api.RetrofitInstance
@@ -16,6 +20,7 @@ import com.emitrackon.emi_trackon.dashboard.home.retailer.RetailerFragment
 import com.emitrackon.emi_trackon.dashboard.people.retailer.RetailerListFragment
 import com.emitrackon.emi_trackon.dashboard.people.user.UserFragment
 import com.emitrackon.emi_trackon.dashboard.qr_code.QrFragment
+import com.emitrackon.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.emitrackon.emi_trackon.dashboard.settings.distributor.DistributerSettingFragment
 import com.emitrackon.emi_trackon.dashboard.settings.retail.RetailerSettingFragment
 import com.emitrackon.emi_trackon.databinding.ActivityDashboardBinding
@@ -35,15 +40,6 @@ class DashboardActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        if (ContextCompat.checkSelfPermission(
-                this@DashboardActivity, android.Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            askForCameraPermission()
-        } else {
-            //setupControls()
-        }
 
         withNetwork { callAuthApi() }
 
@@ -123,82 +119,7 @@ class DashboardActivity : AppCompatActivity() {
 
         }
 
-        /*
-     navController.addOnDestinationChangedListener { controller, destination, arguments ->
-                when (destination.id) {
-                    R.id.home -> {
-                        binding.toolbar.root.show()
-                        binding.toolbar.filter.hide()
-                        binding.toolbar.calender.hide()
 
-                        binding.toolbar.text.text =
-                            if (SharedPref(this@DashboardActivity).getValueInt(Constants.ROLE) == 3) {
-                                controller.navigate(R.id.home_retailer)
-                                "Hi, Retailer"
-                            } else {
-                                controller.navigate(R.id.home_distributor)
-                                "Hi, Distributor"
-                            }
-                    }
-                    R.id.people -> {
-                        binding.toolbar.root.show()
-                        binding.toolbar.filter.show()
-                        binding.toolbar.calender.show()
-
-                        binding.toolbar.text.text =
-                            if (SharedPref(this@DashboardActivity).getValueInt(Constants.ROLE) == 3) {
-                                controller.navigate(R.id.people_user)
-                                "User list"
-                            } else {
-                                controller.navigate(R.id.people_retailer)
-                                "Retailer list"
-                            }
-                    }
-                    R.id.qr -> {
-                        binding.toolbar.filter.hide()
-                        binding.toolbar.calender.hide()
-                        binding.toolbar.root.hide()
-                    }
-                    R.id.setting -> {
-                        binding.toolbar.root.show()
-                        binding.toolbar.filter.hide()
-                        binding.toolbar.calender.hide()
-                        binding.toolbar.text.text = "Settings"
-
-                        if (SharedPref(this@DashboardActivity).getValueInt(Constants.ROLE) == 3) {
-                            controller.navigate(R.id.retailerSettingFragment)
-                        } else {
-                            controller.navigate(R.id.distributerSettingFragment)
-                        }
-                    }
-                }
-            }*/
-
-//        binding.bottomNav.setOnItemReselectedListener { }
-
-    }
-
-    private fun askForCameraPermission() {
-        ActivityCompat.requestPermissions(
-            this@DashboardActivity,
-            arrayOf(android.Manifest.permission.CAMERA),
-            134
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 134 && grantResults.isNotEmpty()) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //setupControls()
-            } else {
-                Toast.makeText(applicationContext, "Permission Denied", Toast.LENGTH_SHORT).show()
-            }
-        }
     }
 
     private fun setHome() {
@@ -216,9 +137,7 @@ class DashboardActivity : AppCompatActivity() {
             }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return navController.navigateUp() || super.onSupportNavigateUp()
-//    }
+
 
     private fun callAuthApi() {
         val call = RetrofitInstance.apiService.getAuthApi()
@@ -231,6 +150,21 @@ class DashboardActivity : AppCompatActivity() {
                         response.body()?.let {
                             SharedPref(this@DashboardActivity).save(Constants.USERID, it.id)
                             SharedPref(this@DashboardActivity).save(Constants.NAME, it.name)
+                            if( it.distributor_type != null){
+                                SharedPref(this@DashboardActivity).save(Constants.DIST_TYPE, it.distributor_type!!)
+                                if(it.distributor_type == 1){
+                                    binding.toolbar.text.text = "Hi, Super Distributor"
+                                }else if(it.distributor_type == 2){
+                                    binding.toolbar.text.text = "Hi, Distributor"
+                                }else if(it.distributor_type == 3){
+                                    binding.toolbar.text.text = "Hi, Sub Distributor"
+                                    // binding.toolbar.switchToRetailer.visibility = android.view.View.VISIBLE
+//                                    binding.toolbar.switchToRetailer.setOnClickListener {
+//                                        startActivity(Intent(this@DashboardActivity, DashBoardNewActivity::class.java))
+//                                    }
+                                }
+                            }
+
                             MainApplication.authData = it
                         }
                     }
