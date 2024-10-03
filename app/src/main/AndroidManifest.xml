@@ -88,7 +88,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.emitrackon.emi_trackon.fileprovider"
+            android:authorities="com.martvalley.emi_trackon.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
