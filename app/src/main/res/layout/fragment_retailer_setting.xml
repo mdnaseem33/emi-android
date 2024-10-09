@@ -72,6 +72,9 @@
                 <include
                     android:id="@+id/logout"
                     layout="@layout/setting_item" />
+                <include
+                    android:id="@+id/switcher"
+                    layout="@layout/setting_item" />
             </LinearLayout>
 
             <TextView

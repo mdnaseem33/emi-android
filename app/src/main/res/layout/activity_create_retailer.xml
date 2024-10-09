@@ -132,6 +132,27 @@
                 android:paddingEnd="@dimen/_5sdp"
                 android:textColor="@color/blue"
                 android:textSize="@dimen/_10sdp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Membership Plan Name"
+                android:textColor="@color/blue" />
+
+            <EditText
+                android:id="@+id/retailer_member"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:background="@drawable/create_edittext_bg"
+                android:fontFamily="@font/roboto_medium"
+                android:singleLine="true"
+                android:text="Plus Member"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_5sdp"
+                android:textColor="@color/blue"
+                android:textSize="@dimen/_10sdp" />
 
             <TextView
                 android:layout_width="wrap_content"

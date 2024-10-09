@@ -9,7 +9,8 @@ object Constants {
     const val BASEURL = "https://login.emitrackon.in/"
     // const val BASEURL =   "https://login.emitrackon.in/" //"https://1.404guys.com/emitrackon/public/"
     const val ROLE = "ROLE"  // 3 for retailer and 2 for distributor
-
+    const val SUB_ROLE = "SUB_ROLE"  // 1 => SUPER DISTRIBUTOR 2 => DISTRIBUTOR 3 => SUB DISTRIBUTOR
+    const val IS_RETAILER = "IS_RETAILER"// 1 => RETAILER 2 => DISTRIBUTOR
 
     const val USERID = "USERID"
     const val RETAILER = "RETAILER"

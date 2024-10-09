@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
                                 val intent = Intent(this@LoginActivity, DashBoardNewActivity::class.java)
                                 startActivity(intent)
                             } else {
-                                val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                                val intent = Intent(this@LoginActivity, DashBoardNewActivity::class.java)
                                 startActivity(intent)
                             }
                             finish()

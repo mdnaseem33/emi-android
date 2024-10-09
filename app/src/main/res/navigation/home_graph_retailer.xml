@@ -24,4 +24,9 @@
         android:name="com.martvalley.emi_trackon.dashboard.retailerModule.user.fragments.UserListFragment"
         android:label="fragment_user_list"
         tools:layout="@layout/fragment_user_list" />
+    <fragment
+        android:id="@+id/people_retailer"
+        android:name="com.martvalley.emi_trackon.dashboard.people.retailer.RetailerListFragment"
+        android:label="fragment_retailer_list"
+        tools:layout="@layout/fragment_retailer_list" />
 </navigation>

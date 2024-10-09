@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.martvalley.emi_trackon.R
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.UpdateKeyActivity
 import com.martvalley.emi_trackon.databinding.UserItemBinding
 import com.martvalley.emi_trackon.utils.Constants
 import com.martvalley.emi_trackon.utils.convertISOTimeToDate
@@ -44,7 +45,23 @@ class UserAdapter(
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.edit -> {
-                        // Handle edit action
+                            val intent = Intent(context, UpdateKeyActivity::class.java);
+
+                            intent.putExtra("customer_id", data.id.toString())
+                            if(data.key_type ==1){
+                                intent.putExtra("title", "Smart Key")
+                                intent.putExtra("sub_title", "Mobile FRP Protection")
+                            }else if(data.key_type ==2){
+                                intent.putExtra("title", "Super Key")
+                                intent.putExtra("sub_title", "Zero Touch Enrollment")
+                            }else if(data.key_type ==3){
+                                intent.putExtra("title", "Home Appliance")
+                                intent.putExtra("sub_title", "Install without reset device")
+                            }else{
+                                return@setOnMenuItemClickListener true
+                            }
+
+                            context.startActivity(intent)
                         true
                     }
                     R.id.show_qr -> {

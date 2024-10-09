@@ -32,6 +32,7 @@ object User {
         val created_at: String,
         val deleted_at: String,
         val device_detail: String,
+        val application_type: String,
         val emi_amount: Int,
         val emi_months: Int,
         val firebase_token: String,
@@ -39,6 +40,9 @@ object User {
         val key_type: Int?,
         val brand: Brand?,
         val bank: Bank?,
+        val bank_id: Int?,
+        val brand_id: Int?,
+        val payment_term: Int,
         val id: Int,
         val image: String,
         val imei1: String,
@@ -46,6 +50,11 @@ object User {
         val is_link: String,
         val last_sync: String,
         val model: String,
+        val application_serial_no: String,
+        val reference_name: String,
+        val reference_number: String,
+        val product_price: Int,
+        val down_payment: Int,
         val name: String,
         val phone: String,
         val retailer_id: Int,
@@ -61,7 +70,8 @@ object User {
 
     data class QRResponse(
         val qr: String,
-        val status: Int
+        val status: Int,
+        val app:  String?
     )
 
 }

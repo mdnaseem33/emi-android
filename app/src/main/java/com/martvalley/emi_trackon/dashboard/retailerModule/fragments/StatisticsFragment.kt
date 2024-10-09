@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerActiveUsersActivity
 import com.martvalley.emi_trackon.dashboard.home.retailer.TotalRetailersActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.martvalley.emi_trackon.databinding.FragmentStatisticsBinding
+import com.martvalley.emi_trackon.utils.Constants
+import com.martvalley.emi_trackon.utils.SharedPref
 import com.martvalley.emi_trackon.utils.hide
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
@@ -31,13 +35,7 @@ class StatisticsFragment : Fragment() {
         binding.creditTransLayout.setOnClickListener {
             startActivity(Intent(requireContext(), AllTransactionActivity::class.java))
         }
-        binding.totalUserLayout.setOnClickListener {
-            startActivity(Intent(context, TotalRetailersActivity::class.java))
-        }
 
-        binding.activeUserLayout.setOnClickListener {
-            startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
-        }
 
         callDashboardApi()
         return binding.root
@@ -65,7 +63,35 @@ class StatisticsFragment : Fragment() {
                             binding.totalActiveUserCount.text = it.active_costomer
                             binding.usedCreditCount.text = it.credit_used
                             binding.totalCreditAvailCount.text = it.credit_available
+                            if(SharedPref(requireContext()).getValueInt(Constants.SUB_ROLE) == 2){
+                                binding.totalUserCount.text = it.total_retailer
+                                binding.nameTotal.text = "Total Retailers"
+                                binding.totalActiveUserCount.text = it.retailer_active
+                                binding.nameActive.text = "Active Retailers"
+                                binding.totalUserLayout.setOnClickListener {
+                                    try {
+                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                                    }catch (e:Exception){
+                                        e.printStackTrace()
+                                    }
+                                }
 
+                                binding.activeUserLayout.setOnClickListener {
+                                    try {
+                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                                    }catch (e:Exception){
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }else{
+                                binding.totalUserLayout.setOnClickListener {
+                                    startActivity(Intent(context, TotalRetailersActivity::class.java))
+                                }
+
+                                binding.activeUserLayout.setOnClickListener {
+                                    startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
+                                }
+                            }
 
                         }
                     }

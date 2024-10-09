@@ -8,6 +8,7 @@ import com.martvalley.emi_trackon.dashboard.retailerModule.UpcomingEmiData
 import com.martvalley.emi_trackon.dashboard.retailerModule.WhatsNewData
 import com.martvalley.emi_trackon.dashboard.retailerModule.fragments.AllTransactionData
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CustomerUpdateRequest
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.RequestSmartKey
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKey
 import com.martvalley.emi_trackon.dashboard.settings.Settings
@@ -51,6 +52,11 @@ interface ApiService {
     @Headers("Accept: application/json")
     @POST("api/customer/smartkey/create")
     fun registerSmartKey(@Body smartKey: RequestSmartKey): Call<Dashboard.CreateUserResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/smartkey/update")
+    fun updateSmartKey(@Body smartKey: CustomerUpdateRequest): Call<Dashboard.CreateUserResponse>
+
 
     @Headers("Accept: application/json")
     @POST("api/customer/superkey/create")
@@ -329,7 +335,7 @@ interface ApiService {
 
     @Headers("Accept: application/json")
     @GET("api/customer/get/create")
-    fun getCustomerCreateData( @Query("is_mobile") is_mobile: Char?, @Query("is_appliance") is_appliance: Char? ): Call<CreateCustomerData>
+    fun getCustomerCreateData( @Query("is_mobile") is_mobile: Char?, @Query("is_appliance") is_appliance: Char? , @Query("customer_id") customer_id: String?): Call<CreateCustomerData>
 
     @Headers("Accept: application/json")
     @GET("api/customer/get/create")

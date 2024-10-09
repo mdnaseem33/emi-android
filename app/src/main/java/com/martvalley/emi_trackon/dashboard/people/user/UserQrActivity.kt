@@ -13,7 +13,7 @@ import retrofit2.Response
 
 class UserQrActivity : AppCompatActivity() {
     private val binding by lazy { ActivityUserQrBinding.inflate(layoutInflater) }
-
+    var toggle = true
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -22,11 +22,26 @@ class UserQrActivity : AppCompatActivity() {
         binding.toolbar.arrow.setOnClickListener { onBackPressed() }
         binding.toolbar.calender.hide()
         binding.toolbar.filter.hide()
-
-
+        binding.toggleButton.setOnClickListener {
+            toggle = !toggle
+            Toggle()
+        }
         withNetwork { callApi() }
 
     }
+
+    private fun Toggle(){
+        if(toggle){
+            binding.appQr.visibility = android.view.View.INVISIBLE
+            binding.qr.visibility = android.view.View.VISIBLE
+            binding.toggleButton.text = "Show App QR"
+        }else{
+            binding.appQr.visibility = android.view.View.VISIBLE
+            binding.qr.visibility = android.view.View.INVISIBLE
+            binding.toggleButton.text = "Show Customer QR"
+        }
+    }
+
 
     private fun callApi() {
         binding.pb.show()
@@ -42,6 +57,7 @@ class UserQrActivity : AppCompatActivity() {
                     200 -> {
                         response.body()?.let {
                             binding.qr.setImageBitmap(it.qr.base64ToBitmap())
+                            binding.appQr.loadImage(Constants.BASEURL+"storage/"+it.app)
                             binding.id.text = intent.getStringExtra("id").toString()
                         }
                     }

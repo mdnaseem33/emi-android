@@ -54,7 +54,7 @@ class SplashActivity : AppCompatActivity() {
             if (SharedPref(this@SplashActivity).getValueInt(Constants.ROLE) == 3) {
                 startActivity(Intent(this, DashBoardNewActivity::class.java))
             }else{
-                startActivity(Intent(this, DashboardActivity::class.java))
+                startActivity(Intent(this, DashBoardNewActivity::class.java))
             }
 
         } else {

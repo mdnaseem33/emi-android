@@ -7,8 +7,10 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -90,7 +92,7 @@ class DeviceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         locationLisRecylerview = LocationLisRecylerview(requireContext(), listOf())
-        callLocationApi()
+        callLocationApi(null)
 
         list2.add(Control.DeviceActionOld(sm = "audio", display = "Audio", value = false, "list2"))
         list2.add(Control.DeviceActionOld(sm = "swd", display = "Wallpaper", value = false, "list2"))
@@ -192,6 +194,7 @@ class DeviceFragment : Fragment() {
             builder.setMessage("Are you sure you want to proceed?")
 
             builder.setPositiveButton("Yes") { dialog: DialogInterface, which: Int ->
+                withNetwork { callRequestDeviceInfoApi("remove") }
                 withNetwork { surrenderCustomer() }
             }
 
@@ -270,6 +273,53 @@ class DeviceFragment : Fragment() {
 
         }
 
+        binding.offlineLock.setOnClickListener {
+            showLockPhonePopUp(true)
+        }
+
+        binding.offlineUnlock.setOnClickListener {
+            showLockPhonePopUp(false)
+        }
+
+    }
+
+    private fun showLockPhonePopUp(isLock: Boolean) {
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        val inflater = layoutInflater
+        val dialogView = inflater.inflate(R.layout.phone_dialog_pop_up, null)
+        val textView = dialogView.findViewById<TextView>(R.id.dialogTextView)
+        textView.text = SharedPref(requireContext()).getValueString("UserPhoneNum")
+        textView.setOnClickListener {
+            openSmsApp(textView.text.toString(), isLock)
+        }
+        val current = dialogView.findViewById<TextView>(R.id.currentPhoneNo)
+        current.setOnClickListener {
+            openSmsApp(current.text.toString(), isLock)
+        }
+        callMobileApi(dialogView)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setCancelable(true)
+        val dialog = dialogBuilder.create()
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
+    }
+
+    private fun openSmsApp(phoneNumber: String, isLock: Boolean) {
+        try {
+            var message = if(isLock) "<<ACTION 100>> " else "<<ACTION 200>> "
+            message += Base64.encodeToString((requireActivity() as ControlsActivity).id.toString().toByteArray(), Base64.DEFAULT)
+            val smsUri = "smsto:$phoneNumber" // Format the URI with the phone number
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse(smsUri) // Set the SMS URI
+                putExtra("sms_body", message) // Add the predefined message
+            }
+            requireContext().startActivity(intent)
+        }catch (e:Exception){
+            showToast("Invalid Mobile number")
+            e.printStackTrace()
+        }
+
+
     }
 
     private fun showLocationPopUp() {
@@ -280,7 +330,10 @@ class DeviceFragment : Fragment() {
         val progress = dialogView.findViewById<TextView>(R.id.no_data)
 
         val recylerview = dialogView.findViewById<RecyclerView>(R.id.location_list_rv)
-
+        val refresh = dialogView.findViewById<ImageView>(R.id.refresh)
+        refresh.setOnClickListener {
+            withNetwork { callLocationApi(recylerview) }
+        }
         if (locList.isEmpty()) {
             progress.show()
         } else {
@@ -852,7 +905,7 @@ class DeviceFragment : Fragment() {
         })
     }
 
-    private fun callLocationApi() {
+    private fun callLocationApi(recyclerView: RecyclerView?) {
         val call = RetrofitInstance.apiService.getCustomerDeviceLastDataApi(
             (requireActivity() as ControlsActivity).id.toString()
         )
@@ -887,6 +940,9 @@ class DeviceFragment : Fragment() {
                                         )
                                         locationLisRecylerview =
                                             LocationLisRecylerview(requireContext(), locList)
+                                        if(recyclerView != null){
+                                            recyclerView.adapter = locationLisRecylerview
+                                        }
                                     } catch (e: Exception) {
                                         e.printStackTrace()
                                     }

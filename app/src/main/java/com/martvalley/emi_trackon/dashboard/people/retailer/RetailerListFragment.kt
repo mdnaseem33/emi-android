@@ -153,7 +153,7 @@ class RetailerListFragment : Fragment() {
     private fun filterList(key: String) {
         val filter_list = ArrayList<Retailer.User>()
         list.forEach {
-            if (it.name.lowercase().contains(key)) {
+            if (it.name.lowercase().contains(key) || it.id.toString().contains(key) || it.email.contains(key) || it.phone.contains(key) ) {
                 filter_list.add(it)
             }
         }

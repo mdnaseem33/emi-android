@@ -36,7 +36,7 @@ class CreateRetailerActivity : AppCompatActivity() {
             val state = binding.retailerStateEt.text.trim().toString()
             val phone = binding.retailerPhoneEt.text.trim().toString()
             val pass = binding.retailerPassword.text.trim().toString()
-
+            val memeber = binding.retailerMember.text.trim().toString()
             if (name.isEmpty()) {
                 showToast("Enter retailer name.")
             } else if (ownername.isEmpty()) {
@@ -62,7 +62,8 @@ class CreateRetailerActivity : AppCompatActivity() {
                     owner_name = ownername,
                     pass = pass,
                     phone = phone,
-                    state = state
+                    state = state,
+                    member = memeber
                 )
                 callAddApi(request)
             }

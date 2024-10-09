@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.exoplayer2.ExoPlayer
+import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.adapter.HomePagerAdapter
 import com.martvalley.emi_trackon.dashboard.adapter.VideoAdapter
@@ -16,13 +17,17 @@ import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerActiveUsersActivity
 import com.martvalley.emi_trackon.dashboard.home.retailer.RetailerTodaysActivationActivity
 import com.martvalley.emi_trackon.dashboard.home.retailer.TotalRetailersActivity
+import com.martvalley.emi_trackon.dashboard.people.retailer.CreateRetailerActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.TutorialActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.UpcomingEmiActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.WhatsNewActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.KeyMainActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.SmartKey
 import com.martvalley.emi_trackon.databinding.FragmentHomeBinding
+import com.martvalley.emi_trackon.utils.Constants
+import com.martvalley.emi_trackon.utils.SharedPref
 import com.martvalley.emi_trackon.utils.hide
 import com.martvalley.emi_trackon.utils.show
 import com.martvalley.emi_trackon.utils.showApiErrorToast
@@ -54,7 +59,7 @@ class HomeFragment : Fragment() {
         //Pager Adapter
 
         withNetwork { callDashboardApi() }
-
+        typeUI()
         keyLayout.smartKeyCard.setOnClickListener {
             val intent = Intent(requireContext(), SmartKey::class.java)
             intent.putExtra("title", "Smart Key")
@@ -81,38 +86,10 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.explore.todayActivation.setOnClickListener {
-            startActivity(Intent(requireContext(), RetailerTodaysActivationActivity::class.java))
-        }
 
-        binding.explore.totalCustomer.setOnClickListener {
-            startActivity(Intent(context, TotalRetailersActivity::class.java))
-        }
-
-        binding.explore.helpSupport.setOnClickListener {
-            startActivity(Intent(requireContext(), ChatBotActivity::class.java))
-        }
-
-        binding.explore.activeCustomer.setOnClickListener {
-            startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
-        }
-
-        binding.explore.videoTutorials.setOnClickListener {
-            startActivity(Intent(context, TutorialActivity::class.java))
-        }
-
-        binding.explore.whatNew.setOnClickListener {
-            startActivity(Intent(context, WhatsNewActivity::class.java))
-        }
-
-        binding.explore.upcomingEmi.setOnClickListener {
-            startActivity(Intent(requireContext(), UpcomingEmiActivity::class.java))
-        }
 
         return binding.root
     }
-
-
 
     private fun releasePlayer() {
         exoPlayer?.let { player ->
@@ -174,5 +151,68 @@ class HomeFragment : Fragment() {
         super.onDestroy()
         releasePlayer()
         _binding = null
+    }
+
+    private fun typeUI(){
+        if(SharedPref(requireContext()).getValueInt(Constants.SUB_ROLE) == 2 || SharedPref(requireContext()).getValueInt(Constants.IS_RETAILER) == 2){
+            binding.keyIncludedLayout.root.visibility = View.GONE
+            binding.explore.upcomingEmi.setOnClickListener {
+                startActivity(Intent(requireContext(), CreateRetailerActivity::class.java))
+            }
+            binding.explore.upComingTxt.text = "Create Retailer"
+            //binding.explore.upcomingImg.setImageResource(R.drawable.add)
+            binding.explore.totalCustomer.setOnClickListener {
+                try {
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            }
+            binding.explore.totalTxt.text = "Total Retailer"
+
+            binding.explore.activeCustomer.setOnClickListener {
+                try {
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            }
+            binding.explore.activeTxt.text = "Active Retailers"
+
+            binding.explore.todayActivation.setOnClickListener {
+                try {
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                }catch (e:Exception){
+                    e.printStackTrace()
+                }
+            }
+        }else{
+            binding.explore.todayActivation.setOnClickListener {
+                startActivity(Intent(requireContext(), RetailerTodaysActivationActivity::class.java))
+            }
+
+            binding.explore.totalCustomer.setOnClickListener {
+                startActivity(Intent(context, TotalRetailersActivity::class.java))
+            }
+
+            binding.explore.activeCustomer.setOnClickListener {
+                startActivity(Intent(context, RetailerActiveUsersActivity::class.java))
+            }
+
+            binding.explore.upcomingEmi.setOnClickListener {
+                startActivity(Intent(requireContext(), UpcomingEmiActivity::class.java))
+            }
+        }
+
+        binding.explore.helpSupport.setOnClickListener {
+            startActivity(Intent(requireContext(), ChatBotActivity::class.java))
+        }
+        binding.explore.videoTutorials.setOnClickListener {
+            startActivity(Intent(context, TutorialActivity::class.java))
+        }
+
+        binding.explore.whatNew.setOnClickListener {
+            startActivity(Intent(context, WhatsNewActivity::class.java))
+        }
     }
 }

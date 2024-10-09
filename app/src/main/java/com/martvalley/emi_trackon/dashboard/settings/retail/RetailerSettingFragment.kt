@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.retailerModule.ChatBotActivity
+import com.martvalley.emi_trackon.dashboard.retailerModule.DashBoardNewActivity
 import com.martvalley.emi_trackon.dashboard.settings.*
 import com.martvalley.emi_trackon.databinding.FragmentRetailerSettingBinding
 import com.martvalley.emi_trackon.login.Auth
@@ -42,6 +43,8 @@ class RetailerSettingFragment : Fragment() {
         binding.logout.img.setImageResource(R.drawable.logout)
         binding.support.img.setImageResource(R.drawable.live_support_img)
         binding.loanPrefix.img.setImageResource(R.drawable.baseline_assured_workload_24)
+        binding.switcher.img.setImageResource(R.drawable.baseline_swap_horiz_24)
+        binding.switcher.root.visibility = View.GONE
         binding.msg.tv.text = "Change Profile Image"
         binding.wallpaper.tv.text = "Wallpaper Customize"
         binding.password.tv.text = "Change Password"
@@ -53,7 +56,11 @@ class RetailerSettingFragment : Fragment() {
         binding.loanPrefix.tv.text = "Loan Prefix"
 
         //binding.audio.tv.text = "Audio Customize"
+        binding.switcher.root.setOnClickListener {
+            SharedPref(requireContext()).save(Constants.IS_RETAILER, 1)
+            startActivity(Intent(requireContext(), DashBoardNewActivity::class.java))
 
+        }
         binding.support.root.setOnClickListener {
             startActivity(Intent(requireContext(), ChatBotActivity::class.java))
         }
@@ -78,17 +85,43 @@ class RetailerSettingFragment : Fragment() {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
-        binding.frp.root.setOnClickListener {
-            startActivity(Intent(requireContext(), FrpEmailActivity::class.java))
-        }
-        binding.loanPrefix.root.setOnClickListener {
-            startActivity(Intent(requireContext(), LoanPrefixActivity::class.java))
+        typeUI()
+        callAuthApi()
+    }
+
+    private fun typeUI(){
+        if(SharedPref(requireContext()).getValueInt(Constants.SUB_ROLE) == 2 || SharedPref(requireContext()).getValueInt(Constants.IS_RETAILER) == 2){
+            binding.frp.root.visibility = View.GONE
+            binding.loanPrefix.root.visibility = View.GONE
+            binding.wallpaper.root.visibility = View.GONE
+            binding.wallpaper.root.visibility = View.GONE
+            binding.report.plusMember.visibility = View.GONE
+
+        }else{
+            binding.frp.root.setOnClickListener {
+                startActivity(Intent(requireContext(), FrpEmailActivity::class.java))
+            }
+            binding.loanPrefix.root.setOnClickListener {
+                startActivity(Intent(requireContext(), LoanPrefixActivity::class.java))
+            }
+
+            binding.qrCode.root.setOnClickListener {
+                startActivity(Intent(requireContext(), PaymentQr::class.java))
+            }
         }
 
-        binding.qrCode.root.setOnClickListener {
-            startActivity(Intent(requireContext(), PaymentQr::class.java))
+        if(SharedPref(requireContext()).getValueInt(Constants.SUB_ROLE) == 3){
+            if(SharedPref(requireContext()).getValueInt(Constants.IS_RETAILER) == 2){
+                binding.switcher.tv.text = "Switch To Retailer"
+            }else if(SharedPref(requireContext()).getValueInt(Constants.IS_RETAILER) == 1){
+                binding.switcher.tv.text = "Switch To Distributor"
+            }else{
+                SharedPref(requireContext()).save(Constants.IS_RETAILER, 2)
+                binding.switcher.tv.text = "Switch To Distributor"
+            }
+
+            binding.switcher.root.visibility = View.VISIBLE
         }
-        callAuthApi()
     }
 
     private fun callAuthApi() {

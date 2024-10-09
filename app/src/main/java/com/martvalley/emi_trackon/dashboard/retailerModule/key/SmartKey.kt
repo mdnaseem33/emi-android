@@ -500,7 +500,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
             is_appliance = 'Y'
             is_mobile = 'N'
         }
-        val call = RetrofitInstance.apiService.getCustomerCreateData(is_mobile, is_appliance)
+        val call = RetrofitInstance.apiService.getCustomerCreateData(is_mobile, is_appliance, null)
         call.enqueue(object : Callback<CreateCustomerData> {
             override fun onResponse(
                 p0: Call<CreateCustomerData>,

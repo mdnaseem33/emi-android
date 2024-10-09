@@ -2,6 +2,7 @@ package com.martvalley.emi_trackon.dashboard.retailerModule
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -48,14 +49,39 @@ class DashBoardNewActivity : AppCompatActivity(), NotificationCountListener {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.homeFragment -> {
+                    navController.navigate(R.id.homeFragment)
+                    true
+                }
+                R.id.userListFragment -> {
+                    if(SharedPref(this).getValueInt(Constants.SUB_ROLE) == 2 || SharedPref(this).getValueInt(Constants.IS_RETAILER) == 2){
+                        navController.navigate(R.id.people_retailer)
+                    }else{
+                        navController.navigate(R.id.userListFragment)
+                    }
+                    true
+                }
+                R.id.statisticsFragment -> {
+                    navController.navigate(R.id.statisticsFragment)
+                    true
+                }
+                R.id.retailerSettingFragment2 -> {
+                    navController.navigate(R.id.retailerSettingFragment2)
+                    true
+                }
+                else -> super.onOptionsItemSelected(item)
+            }
+        }
         binding.notification.setOnClickListener {
             startActivity(Intent(this, NotificationViewActivity::class.java))
         }
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.statisticsFragment || destination.id == R.id.retailerSettingFragment2 || destination.id == R.id.userListFragment) {
-                supportActionBar?.hide()
-            } else {
+            if (destination.id == R.id.homeFragment) {
                 supportActionBar?.show()
+            } else {
+                supportActionBar?.hide()
             }
         }
         binding.userNameTextView.text = SharedPref(this).getValueString(Constants.NAME)
@@ -84,8 +110,30 @@ class DashBoardNewActivity : AppCompatActivity(), NotificationCountListener {
                         response.body()?.let {
                             SharedPref(this@DashBoardNewActivity).save(Constants.USERID, it.id)
                             SharedPref(this@DashBoardNewActivity).save(Constants.NAME, it.name)
+                            if (it.distributor_type != null && it.role==2){
+                                if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.SUB_ROLE) == 0 ){
+                                    SharedPref(this@DashBoardNewActivity).save(Constants.SUB_ROLE, it.distributor_type!!)
+                                    if(it.distributor_type == 3){
+                                        if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.IS_RETAILER) == null){
+                                            SharedPref(this@DashBoardNewActivity).save(Constants.IS_RETAILER, 2)
+                                        }
+
+                                    }
+                                    recreate()
+                                }
+                                SharedPref(this@DashBoardNewActivity).save(Constants.SUB_ROLE, it.distributor_type!!)
+                                if(it.distributor_type == 3){
+                                    if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.IS_RETAILER) == null){
+                                        SharedPref(this@DashBoardNewActivity).save(Constants.IS_RETAILER, 2)
+                                    }
+
+                                }
+
+
+                            }
                             MainApplication.authData = it
                             binding.userNameTextView.text = it.name
+
                             if (it.image != null) {
                                 val imageUrl = Constants.BASEURL + "storage/public/" +it.image
                                 Glide.with(this@DashBoardNewActivity)
@@ -112,6 +160,11 @@ class DashBoardNewActivity : AppCompatActivity(), NotificationCountListener {
     override fun onResume() {
         super.onResume()
         callAuthApi()
+    }
+
+    public fun changeNav(destinationId: Int) {
+        val navController = findNavController(R.id.frgContainerHome)
+        navController.navigate(destinationId)
     }
 
     override fun onNotificationCountUpdated(count: Int) {

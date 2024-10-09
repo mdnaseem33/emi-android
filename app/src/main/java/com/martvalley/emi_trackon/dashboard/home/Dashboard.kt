@@ -11,7 +11,10 @@ object Dashboard {
         val total_costomer: String,
         val bannerList: List<Banner>,
         val youtubeLinks: List<YoutubeLink>,
-        val notificationCount:  Int?
+        val notificationCount:  Int?,
+        val total_retailer: String,
+        val retailer_active: String
+
     )
 
     data class DistributorResponse(

@@ -62,7 +62,8 @@ object Retailer {
         val owner_name: String,
         val pass: String,
         val phone: String,
-        val state: String
+        val state: String,
+        val member: String
     )
 
     data class ViewRetailerResponse(
