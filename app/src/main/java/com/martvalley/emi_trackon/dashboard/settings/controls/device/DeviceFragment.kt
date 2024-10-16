@@ -92,7 +92,7 @@ class DeviceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         locationLisRecylerview = LocationLisRecylerview(requireContext(), listOf())
-        callLocationApi(null)
+        callLocationApi(null, null)
 
         list2.add(Control.DeviceActionOld(sm = "audio", display = "Audio", value = false, "list2"))
         list2.add(Control.DeviceActionOld(sm = "swd", display = "Wallpaper", value = false, "list2"))
@@ -328,11 +328,12 @@ class DeviceFragment : Fragment() {
         val dialogView = inflater.inflate(R.layout.location_listpopup, null)
         val closeBtn = dialogView.findViewById<ImageView>(R.id.close_btn)
         val progress = dialogView.findViewById<TextView>(R.id.no_data)
-
+        val prog = dialogView.findViewById<ProgressBar>(R.id.prog)
         val recylerview = dialogView.findViewById<RecyclerView>(R.id.location_list_rv)
         val refresh = dialogView.findViewById<ImageView>(R.id.refresh)
         refresh.setOnClickListener {
-            withNetwork { callLocationApi(recylerview) }
+            prog.show()
+            withNetwork { callLocationApi(recylerview, prog) }
         }
         if (locList.isEmpty()) {
             progress.show()
@@ -905,7 +906,7 @@ class DeviceFragment : Fragment() {
         })
     }
 
-    private fun callLocationApi(recyclerView: RecyclerView?) {
+    private fun callLocationApi(recyclerView: RecyclerView?, prog: ProgressBar?) {
         val call = RetrofitInstance.apiService.getCustomerDeviceLastDataApi(
             (requireActivity() as ControlsActivity).id.toString()
         )
@@ -917,7 +918,9 @@ class DeviceFragment : Fragment() {
                 binding.pb.hide()
                 when (response.code()) {
                     200 -> {
-
+                        if(prog != null){
+                            prog.hide()
+                        }
                         if (response.body()?.data == null) {
 
                         } else {
@@ -942,7 +945,9 @@ class DeviceFragment : Fragment() {
                                             LocationLisRecylerview(requireContext(), locList)
                                         if(recyclerView != null){
                                             recyclerView.adapter = locationLisRecylerview
+                                            binding.pb.hide()
                                         }
+
                                     } catch (e: Exception) {
                                         e.printStackTrace()
                                     }

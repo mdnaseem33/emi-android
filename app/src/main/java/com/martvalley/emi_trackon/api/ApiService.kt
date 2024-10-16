@@ -14,6 +14,7 @@ import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKey
 import com.martvalley.emi_trackon.dashboard.settings.Settings
 import com.martvalley.emi_trackon.dashboard.settings.controls.Control
 import com.martvalley.emi_trackon.dashboard.settings.controls.device.DeviceBasics
+import com.martvalley.emi_trackon.dashboard.settings.controls.reminder.ChargesRequest
 import com.martvalley.emi_trackon.forgot_pass.ForgotPass
 import com.martvalley.emi_trackon.login.Auth
 import com.martvalley.emi_trackon.login.Login
@@ -258,6 +259,10 @@ interface ApiService {
     @Headers("Accept: application/json")
     @POST("api/customer/emi/status/change")
     fun updateEmiTransactionDateApi(@Body request: Control.UpdateDateEmiRequest): Call<Retailer.StatusChangeResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/customer/charges/update")
+    fun updateChargesCustomer(@Body request: ChargesRequest): Call<Retailer.StatusChangeResponse>
 
 
     @Headers("Accept: application/json")

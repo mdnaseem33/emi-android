@@ -66,10 +66,11 @@ class UserAdapter(
                     }
                     R.id.show_qr -> {
                         context.startActivity(
+
                             Intent(context, UserQrActivity::class.java).putExtra(
                                 "id",
                                 data.id.toString()
-                            )
+                            ).putExtra("type", data.key_type)
                         )
                         true
                     }

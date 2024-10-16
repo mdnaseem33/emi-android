@@ -553,7 +553,7 @@ class UpdateKeyActivity : AppCompatActivity() , onImageCaptureListener {
 
                 if(createCustomerData!!.brands != null){
                     var brandList = createCustomerData!!.brands as ArrayList<Brand>
-                    brandList.add(0, Brand("",0, "", "Select Brand", ""))
+                    brandList.add(0, Brand("",0, "", "Select Brand", "", null))
 
                     searchableSpinnerAdapter = SearchableSpinnerAdapter(this@UpdateKeyActivity, brandList)
                     binding.selectBrand.adapter = searchableSpinnerAdapter
@@ -738,11 +738,7 @@ class UpdateKeyActivity : AppCompatActivity() , onImageCaptureListener {
                 when (response.code()) {
                     200 -> {
 
-                        startActivity(
-                            Intent(this@UpdateKeyActivity, UserQrActivity::class.java).putExtra(
-                                "id",
-                                response.body()!!.customer_id.toString()
-                            ))
+                        showToast("Customer Updated Successfully")
                         finish()
                     }
                     else -> {
@@ -763,83 +759,6 @@ class UpdateKeyActivity : AppCompatActivity() , onImageCaptureListener {
 
     }
 
-    private fun createHomeKey(request: RequestSmartKey) {
-        request.logd()
-        val call = RetrofitInstance.apiService.registerHomeKey(request)
-        call.enqueue(object : Callback<Dashboard.CreateUserResponse> {
-            override fun onResponse(
-                call: Call<Dashboard.CreateUserResponse>,
-                response: Response<Dashboard.CreateUserResponse>
-            ) {
-                binding.pb.hide()
-                binding.overlay.hide()
-                Log.d("response",response.body().toString())
-                when (response.code()) {
-                    200 -> {
-
-                        startActivity(
-                            Intent(this@UpdateKeyActivity, UserQrActivity::class.java).putExtra(
-                                "id",
-                                response.body()!!.customer_id.toString()
-                            ).putExtra("local_image", true))
-                        finish()
-                    }
-                    else -> {
-                        Toast.makeText(this@UpdateKeyActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
-                        binding.pb.hide()
-                        binding.overlay.hide()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Dashboard.CreateUserResponse>, t: Throwable) {
-                Toast.makeText(this@UpdateKeyActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
-                binding.pb.hide()
-                binding.overlay.hide()
-            }
-
-        })
-
-    }
-    private fun createSuperKey(request: RequestSmartKey) {
-        request.logd()
-
-        val call = RetrofitInstance.apiService.registerSuperKey(request)
-        call.enqueue(object : Callback<Dashboard.CreateUserResponse> {
-            override fun onResponse(
-                call: Call<Dashboard.CreateUserResponse>,
-                response: Response<Dashboard.CreateUserResponse>
-            ) {
-                binding.pb.hide()
-                binding.overlay.hide()
-                Log.d("response",response.body().toString())
-                when (response.code()) {
-                    200 -> {
-
-                        startActivity(
-                            Intent(this@UpdateKeyActivity, UserQrActivity::class.java).putExtra(
-                                "id",
-                                response.body()!!.customer_id.toString()
-                            ))
-                        finish()
-                    }
-                    else -> {
-                        Toast.makeText(this@UpdateKeyActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
-                        binding.pb.hide()
-                        binding.overlay.hide()
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<Dashboard.CreateUserResponse>, t: Throwable) {
-                Toast.makeText(this@UpdateKeyActivity, "Something went wrong", Toast.LENGTH_SHORT).show()
-                binding.pb.hide()
-                binding.overlay.hide()
-            }
-
-        })
-
-    }
 
 
     override fun onImageCapture(uri: Uri) {

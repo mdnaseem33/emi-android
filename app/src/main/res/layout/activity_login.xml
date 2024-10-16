@@ -171,7 +171,8 @@
         android:textSize="@dimen/_12sdp"
         app:layout_constraintEnd_toEndOf="@+id/email_et"
         app:layout_constraintStart_toStartOf="@+id/email_et"
-        app:layout_constraintTop_toBottomOf="@+id/pass_tv" />
+        app:layout_constraintTop_toBottomOf="@+id/pass_tv"
+        android:drawableEnd="@drawable/baseline_remove_red_eye_24_close"/>
 
     <TextView
         android:id="@+id/forgotpass_tv"

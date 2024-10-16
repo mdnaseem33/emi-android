@@ -56,4 +56,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/dateReceiver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#001F3F"
+        app:layout_constraintTop_toBottomOf="@id/receiverTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

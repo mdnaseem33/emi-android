@@ -39,11 +39,13 @@ import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.dashboard.home.Dashboard
 import com.martvalley.emi_trackon.dashboard.people.user.UserQrActivity
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.adapter.SearchableFinanceAdapter
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.adapter.SearchableModelAdapter
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.CameraFragment
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.fragments.onImageCaptureListener
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Bank
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Brand
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.CreateCustomerData
+import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.Model
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.RequestSmartKey
 import com.martvalley.emi_trackon.dashboard.retailerModule.key.model.SmartKeyModel
 import com.martvalley.emi_trackon.databinding.ActivitySmartKeyBinding
@@ -64,6 +66,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
     private var dialog: AlertDialog? = null
     // Track selected item
     var selectedItem: Brand? = null
+    var selectedModel: Model? = null
     var selectedBank: Bank? = null
     var selectedFrequency: Int = 0
     var selectedNumberOfInstallment: Int =0
@@ -71,6 +74,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
     val numberOfInstallment = arrayOf("Select Number of Installment", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12")
     private lateinit var searchableSpinnerAdapter: SearchableSpinnerAdapter
     private lateinit var searchableFinanceAdapter: SearchableFinanceAdapter
+    private lateinit var searchableModelAdapter: SearchableModelAdapter
 
     private var signatureImage: Boolean = false
     // Start MainFragment
@@ -144,6 +148,11 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
 
         binding.selectBrand.setOnTouchListener{ v, _ ->
             showSearchableDialog()
+            true
+        }
+
+        binding.modelNoEditText.setOnTouchListener{ v, _ ->
+            showSearchableModelDialog()
             true
         }
 
@@ -429,10 +438,23 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
         })
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            if (position !=0){
+            val data = listView.getItemAtPosition(position) as? Brand
+            if (data != null && data.id !=0){
                 // Set the selected item when an item is clicked
                 selectedItem = listView.getItemAtPosition(position) as? Brand
+
                 binding.selectBrand.setSelection(position)
+                val modelList = if(selectedItem != null && selectedItem!!.models == null){
+                    arrayListOf<Model>()
+                }else{
+                     selectedItem!!.models as ArrayList<Model>
+                }
+
+                modelList.add(0, Model("","", 0, "", "Select Model", "", ""))
+
+                searchableModelAdapter = SearchableModelAdapter(this@SmartKey, modelList)
+                binding.modelNoEditText.adapter = searchableModelAdapter
+                binding.modelNoEditText.setSelection(0)
                 // Dismiss the dialog
                 dialog?.dismiss()
                 dialog = null
@@ -441,6 +463,54 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
         }
         dialog = MaterialAlertDialogBuilder(this@SmartKey)
             .setTitle("Select Brand")
+            .setView(dialogView)
+            .create()
+
+        dialog?.show()
+    }
+
+    private fun showSearchableModelDialog() {
+        // Check if a dialog is already showing
+        if (dialog?.isShowing == true) {
+            return
+        }
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.spinner_dropdown, null)
+        val listView = dialogView.findViewById<ListView>(R.id.list_view)
+        val searchEditText = dialogView.findViewById<EditText>(R.id.search_edit_text)
+
+        listView.adapter = searchableModelAdapter
+
+        // Implement TextWatcher correctly
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // No action needed
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Filter the adapter
+                searchableModelAdapter.filter.filter(s)
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // No action needed
+            }
+        })
+
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val data = listView.getItemAtPosition(position) as? Model
+            if (data != null && data.id !=0){
+                // Set the selected item when an item is clicked
+                selectedModel = listView.getItemAtPosition(position) as? Model
+                binding.modelNoEditText.setSelection(position)
+                // Dismiss the dialog
+                dialog?.dismiss()
+                dialog = null
+            }
+
+        }
+        dialog = MaterialAlertDialogBuilder(this@SmartKey)
+            .setTitle("Select Model")
             .setView(dialogView)
             .create()
 
@@ -476,14 +546,17 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
         })
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            if (position != 0){
+
                 // Set the selected item when an item is clicked
-                selectedBank = listView.getItemAtPosition(position) as? Bank
-                binding.selectBank.setSelection(position)
-                // Dismiss the dialog
-                dialog?.dismiss()
-                dialog = null
-            }
+                val data = listView.getItemAtPosition(position) as? Bank
+                if ( data != null && data.id !=0){
+                    selectedBank = listView.getItemAtPosition(position) as? Bank
+                    binding.selectBank.setSelection(position)
+                    // Dismiss the dialog
+                    dialog?.dismiss()
+                    dialog = null
+                }
+
         }
         dialog = MaterialAlertDialogBuilder(this@SmartKey)
             .setTitle("Select Finance")
@@ -514,7 +587,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
 
                 if(createCustomerData!!.brands != null){
                     var brandList = createCustomerData!!.brands as ArrayList<Brand>
-                    brandList.add(0, Brand("",0, "", "Select Brand", ""))
+                    brandList.add(0, Brand("",0, "", "Select Brand", "", null))
 
                     searchableSpinnerAdapter = SearchableSpinnerAdapter(this@SmartKey, brandList)
                     binding.selectBrand.adapter = searchableSpinnerAdapter
@@ -526,6 +599,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
                     var bankList = createCustomerData!!.banks as ArrayList<Bank>
                     bankList.add(0, Bank("", 0,"", "Select Bank", ""))
                     searchableFinanceAdapter = SearchableFinanceAdapter(this@SmartKey, bankList)
+                    searchableSpinnerAdapter.filter.filter("")
                     binding.selectBank.adapter = searchableFinanceAdapter
                     binding.selectBank.setSelection(0)
 
@@ -638,6 +712,12 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
             return
         }
 
+        if(selectedModel == null){
+            Toast.makeText(this, "Please select a model no.", Toast.LENGTH_SHORT).show()
+            hideLoading()
+            return
+        }
+
         if(selectedBank == null){
             Toast.makeText(this, "Please select a bank", Toast.LENGTH_SHORT).show()
             hideLoading()
@@ -700,7 +780,7 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
             binding.datepicker.text.toString(),
             binding.loanNumEditText.text.toString(),
             binding.mobileEditText.text.toString(),
-            binding.modelNoEditText.text.toString(),
+            selectedModel!!.name,
             binding.custNameEditText.text.toString(),
             (selectedFrequency-1),
             payment_type,
@@ -748,6 +828,9 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
                             Intent(this@SmartKey, UserQrActivity::class.java).putExtra(
                                 "id",
                                 response.body()!!.customer_id.toString()
+                            ).putExtra(
+                                "type",
+                                1
                             ))
                         finish()
                     }
@@ -787,7 +870,10 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
                             Intent(this@SmartKey, UserQrActivity::class.java).putExtra(
                                 "id",
                                 response.body()!!.customer_id.toString()
-                            ).putExtra("local_image", true))
+                            ).putExtra("local_image", true).putExtra(
+                                "type",
+                                3
+                            ))
                         finish()
                     }
                     else -> {
@@ -826,6 +912,9 @@ class SmartKey : AppCompatActivity(), OnBarcodeScannedListener, onImageCaptureLi
                             Intent(this@SmartKey, UserQrActivity::class.java).putExtra(
                                 "id",
                                 response.body()!!.customer_id.toString()
+                            ).putExtra(
+                                "type",
+                                2
                             ))
                         finish()
                     }

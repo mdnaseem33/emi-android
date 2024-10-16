@@ -114,7 +114,7 @@ class DashBoardNewActivity : AppCompatActivity(), NotificationCountListener {
                                 if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.SUB_ROLE) == 0 ){
                                     SharedPref(this@DashBoardNewActivity).save(Constants.SUB_ROLE, it.distributor_type!!)
                                     if(it.distributor_type == 3){
-                                        if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.IS_RETAILER) == null){
+                                        if(SharedPref(this@DashBoardNewActivity).getValueInt(Constants.IS_RETAILER) == 0){
                                             SharedPref(this@DashBoardNewActivity).save(Constants.IS_RETAILER, 2)
                                         }
 

@@ -2,7 +2,9 @@ package com.martvalley.emi_trackon.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.martvalley.emi_trackon.api.RetrofitInstance
@@ -21,6 +23,7 @@ import com.martvalley.emi_trackon.utils.showApiErrorToast
 import com.martvalley.emi_trackon.utils.showToast
 import com.martvalley.emi_trackon.utils.withNetwork
 import com.google.gson.Gson
+import com.martvalley.emi_trackon.R
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,7 +32,7 @@ import retrofit2.Response
 
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
-
+    private var isPasswordVisible = false
     var selected = Constants.RETAILER
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +78,29 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
 
+        binding.passEt.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val drawableEnd = 2 // drawableEnd is at index 2
+                if (event.rawX >= (binding.passEt.right - binding.passEt.compoundDrawables[drawableEnd].bounds.width())) {
+                    togglePasswordVisibility()
+                    return@setOnTouchListener true
+                }
+            }
+            false
+        }
 
+    }
+
+    private fun togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            binding.passEt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            binding.passEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_remove_red_eye_24_close, 0)
+        } else {
+            binding.passEt.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            binding.passEt.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_remove_red_eye_24, 0)
+        }
+        isPasswordVisible = !isPasswordVisible
+        binding.passEt.setSelection(binding.passEt.text.length) // Move cursor to the end
     }
 
 

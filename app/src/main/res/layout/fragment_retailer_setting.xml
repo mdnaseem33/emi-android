@@ -75,7 +75,11 @@
                 <include
                     android:id="@+id/switcher"
                     layout="@layout/setting_item" />
+                <include
+                    android:id="@+id/changeLock"
+                    layout="@layout/setting_item" />
             </LinearLayout>
+
 
             <TextView
                 android:layout_width="wrap_content"

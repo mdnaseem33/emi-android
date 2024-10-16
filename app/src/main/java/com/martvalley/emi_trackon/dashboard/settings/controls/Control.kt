@@ -69,7 +69,8 @@ object Control {
         val key_type: Int,
         val application_type: String,
         val bank: Bank?,
-        val brand: Brand?
+        val brand: Brand?,
+        var charges: Int
     )
 
 

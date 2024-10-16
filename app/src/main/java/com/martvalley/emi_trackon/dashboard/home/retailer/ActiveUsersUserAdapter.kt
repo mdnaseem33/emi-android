@@ -86,6 +86,9 @@ class ActiveUsersUserAdapter(
                             Intent(context, UserQrActivity::class.java).putExtra(
                                 "id",
                                 data.id.toString()
+                            ).putExtra(
+                                "type",
+                                data.key_type
                             )
                         )
                 }

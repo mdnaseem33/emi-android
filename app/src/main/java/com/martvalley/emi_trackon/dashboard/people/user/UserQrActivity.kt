@@ -3,6 +3,7 @@ package com.martvalley.emi_trackon.dashboard.people.user
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import com.martvalley.emi_trackon.R
 import com.martvalley.emi_trackon.api.RetrofitInstance
 import com.martvalley.emi_trackon.databinding.ActivityUserQrBinding
@@ -25,6 +26,9 @@ class UserQrActivity : AppCompatActivity() {
         binding.toggleButton.setOnClickListener {
             toggle = !toggle
             Toggle()
+        }
+        if(intent.getIntExtra("type",0) == 3){
+            binding.toggleButton.visibility = View.VISIBLE
         }
         withNetwork { callApi() }
 
@@ -52,7 +56,6 @@ class UserQrActivity : AppCompatActivity() {
                 call: Call<User.QRResponse>, response: Response<User.QRResponse>
             ) {
                 binding.pb.hide()
-                Log.d("TAG", "onResponse: ${response.body()}")
                 when (response.code()) {
                     200 -> {
                         response.body()?.let {
