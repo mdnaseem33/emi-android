@@ -10,6 +10,12 @@ object Settings {
         val old_password: String
     )
 
+    data class PasswordChangeRetailerRequest(
+        val confirm_password: String,
+        val password: String,
+        val id: String
+    )
+
     data class ProfileUpdateRequest(
         val address: String,
         val gst: String,

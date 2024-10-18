@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ class RetailerListFragment : Fragment() {
     private val binding by lazy { FragmentRetailerListBinding.inflate(layoutInflater) }
     private lateinit var adapter: RetailerAdapter
     val list = ArrayList<Retailer.User>()
-
+    private var retailerType: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -31,7 +32,7 @@ class RetailerListFragment : Fragment() {
     val edit =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                withNetwork { callApi() }
+                withNetwork { callApi(retailerType) }
             }
         }
 
@@ -40,14 +41,14 @@ class RetailerListFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 if (result.data?.getBooleanExtra("statuschanged", false) == true) {
-                    withNetwork { callApi() }
+                    withNetwork { callApi(retailerType) }
                 }
             }
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        retailerType = arguments?.getString("type")
         adapter = RetailerAdapter(list, requireContext()) { data, action, pos ->
             when (action) {
                 "action" -> {
@@ -117,7 +118,7 @@ class RetailerListFragment : Fragment() {
         val res =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    withNetwork { callApi() }
+                    withNetwork { callApi(retailerType) }
                 }
             }
 
@@ -145,7 +146,7 @@ class RetailerListFragment : Fragment() {
 
         })
 
-        withNetwork { callApi() }
+        withNetwork { callApi(retailerType) }
 
     }
 
@@ -161,9 +162,10 @@ class RetailerListFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun callApi() {
+    private fun callApi(retailerType: String?) {
+        retailerType.logd("fragment data")
         binding.pb.show()
-        val call = RetrofitInstance.apiService.getRetailerListApi()
+        val call = RetrofitInstance.apiService.getRetailerListApi(type = retailerType)
         call.enqueue(object : Callback<Retailer.RetailerListResponse> {
             override fun onResponse(
                 call: Call<Retailer.RetailerListResponse>,
@@ -206,7 +208,7 @@ class RetailerListFragment : Fragment() {
                 when (response.code()) {
                     200 -> {
                         response.body()?.let {
-                            withNetwork { callApi() }
+                            withNetwork { callApi(retailerType) }
 //                            adapter.notifyDataSetChanged()
                         }
                     }

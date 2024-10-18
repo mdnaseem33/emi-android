@@ -162,9 +162,10 @@ class DashBoardNewActivity : AppCompatActivity(), NotificationCountListener {
         callAuthApi()
     }
 
-    public fun changeNav(destinationId: Int) {
+    public fun changeNav(destinationId: Int, bundle: Bundle) {
         val navController = findNavController(R.id.frgContainerHome)
-        navController.navigate(destinationId)
+        
+        navController.navigate(destinationId, bundle)
     }
 
     override fun onNotificationCountUpdated(count: Int) {

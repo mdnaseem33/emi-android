@@ -99,7 +99,7 @@ interface ApiService {
 
     @Headers("Accept: application/json")
     @GET("api/retailersss")
-    fun getRetailerListApi(): Call<Retailer.RetailerListResponse>
+    fun getRetailerListApi(@Query("type") type: String? = null): Call<Retailer.RetailerListResponse>
 
     //<!-------------------------------- status change --------------------------->
 
@@ -229,6 +229,10 @@ interface ApiService {
     @Headers("Accept: application/json")
     @POST("api/profile/password-change-save")
     fun passwordChangeApi(@Body request: Settings.PasswordChangeRequest): Call<Retailer.StatusChangeResponse>
+
+    @Headers("Accept: application/json")
+    @POST("api/retailer/change/password")
+    fun passwordChangeReatiler(@Body request: Settings.PasswordChangeRetailerRequest): Call<Retailer.StatusChangeResponse>
 
 
     @Headers("Accept: application/json")

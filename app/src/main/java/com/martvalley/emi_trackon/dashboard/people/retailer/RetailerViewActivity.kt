@@ -102,6 +102,13 @@ class RetailerViewActivity : AppCompatActivity() {
             )
         }
 
+        binding.changePassword.setOnClickListener {
+            val intent = Intent(
+                this, ChangeRetailerPassword::class.java
+            ).putExtra("id", data.id)
+
+            startActivity(intent)
+        }
 
 
         binding.editBtn.setOnClickListener {

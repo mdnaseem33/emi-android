@@ -163,7 +163,10 @@ class HomeFragment : Fragment() {
             //binding.explore.upcomingImg.setImageResource(R.drawable.add)
             binding.explore.totalCustomer.setOnClickListener {
                 try {
-                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                    val bundle = Bundle().apply {
+                        putString("type", "total")
+                    }
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer, bundle)
                 }catch (e:Exception){
                     e.printStackTrace()
                 }
@@ -172,7 +175,10 @@ class HomeFragment : Fragment() {
 
             binding.explore.activeCustomer.setOnClickListener {
                 try {
-                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                    val bundle = Bundle().apply {
+                        putString("type", "active")
+                    }
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer, bundle)
                 }catch (e:Exception){
                     e.printStackTrace()
                 }
@@ -181,7 +187,10 @@ class HomeFragment : Fragment() {
 
             binding.explore.todayActivation.setOnClickListener {
                 try {
-                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                    val bundle = Bundle().apply {
+                        putString("type", "today")
+                    }
+                    (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer, bundle)
                 }catch (e:Exception){
                     e.printStackTrace()
                 }

@@ -70,7 +70,10 @@ class StatisticsFragment : Fragment() {
                                 binding.nameActive.text = "Active Retailers"
                                 binding.totalUserLayout.setOnClickListener {
                                     try {
-                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                                        val bundle = Bundle().apply {
+                                            putString("type", "total")
+                                        }
+                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer, bundle)
                                     }catch (e:Exception){
                                         e.printStackTrace()
                                     }
@@ -78,7 +81,10 @@ class StatisticsFragment : Fragment() {
 
                                 binding.activeUserLayout.setOnClickListener {
                                     try {
-                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer)
+                                        val bundle = Bundle().apply {
+                                            putString("type", "active")
+                                        }
+                                        (requireActivity() as DashBoardNewActivity).changeNav(R.id.people_retailer, bundle)
                                     }catch (e:Exception){
                                         e.printStackTrace()
                                     }

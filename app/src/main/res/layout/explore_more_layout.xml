@@ -91,7 +91,7 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
-            android:src="@drawable/img_active_user" />
+            android:src="@drawable/active_user_new" />
 
 
         <TextView
@@ -124,7 +124,7 @@
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
             android:scaleType="fitXY"
-            android:src="@drawable/img_upcoming_emi" />
+            android:src="@drawable/new_amount" />
 
 
         <TextView

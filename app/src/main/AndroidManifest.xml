@@ -33,6 +33,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="35">
         <activity
+            android:name=".dashboard.people.retailer.ChangeRetailerPassword"
+            android:exported="false" />
+        <activity
             android:name=".distributor.DistDashboardActivity"
             android:exported="false" />
         <activity
