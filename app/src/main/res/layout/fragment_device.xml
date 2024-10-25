@@ -199,12 +199,42 @@
             android:background="@drawable/home_bg"
             android:padding="@dimen/_10sdp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/surrenderbtn"
+            app:layout_constraintBottom_toTopOf="@+id/buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout2"
             app:spanCount="4" />
+
+        <LinearLayout
+            android:id="@+id/buttons"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/offlineLock"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="Offline Lock"
+                android:layout_margin="8dp"
+                android:backgroundTint="@color/red"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:id="@+id/offlineUnlock"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:layout_margin="8dp"
+                android:text="Offline Unlock"/>
+
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/surrenderbtn"
@@ -217,7 +247,7 @@
             android:textAllCaps="false"
             android:visibility="visible"
             app:cornerRadius="@dimen/_5sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttons"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />

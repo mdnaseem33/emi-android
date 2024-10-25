@@ -213,7 +213,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:id="@+id/keyStep2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -274,18 +274,26 @@
                             android:drawableStart="@drawable/retry_black"
                             android:layout_marginTop="10dp" />
 
-                        <EditText
+                        <Spinner
                             android:id="@+id/modelNoEditText"
                             android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginTop="15dp"
-                            android:autofillHints="Name"
-                            android:background="@drawable/text_key_radius_grey"
-                            android:hint="@string/model_no"
-                            android:inputType="textCapCharacters"
-                            android:maxLines="1"
-                            android:paddingHorizontal="10dp"
-                            android:textSize="14sp" />
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/scan_blue_background"
+                            android:drawableStart="@drawable/retry_black"
+                            android:layout_marginTop="10dp" />
+
+<!--                        <EditText-->
+<!--                            android:id="@+id/modelNoEditText"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="50dp"-->
+<!--                            android:layout_marginTop="15dp"-->
+<!--                            android:autofillHints="Name"-->
+<!--                            android:background="@drawable/text_key_radius_grey"-->
+<!--                            android:hint="@string/model_no"-->
+<!--                            android:inputType="textCapCharacters"-->
+<!--                            android:maxLines="1"-->
+<!--                            android:paddingHorizontal="10dp"-->
+<!--                            android:textSize="14sp" />-->
                         <EditText
                             android:id="@+id/serialNumberEdit"
                             android:layout_width="match_parent"
@@ -352,6 +360,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/keyStep3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

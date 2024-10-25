@@ -33,6 +33,15 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="35">
         <activity
+            android:name=".dashboard.people.retailer.ChangeRetailerPassword"
+            android:exported="false" />
+        <activity
+            android:name=".distributor.DistDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dashboard.retailerModule.key.UpdateKeyActivity"
+            android:exported="false" />
+        <activity
             android:name=".dashboard.retailerModule.fragments.AllTransactionActivity"
             android:exported="false" />
         <activity
@@ -88,7 +97,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.emitrackon.emi_trackon.fileprovider"
+            android:authorities="com.martvalley.emi_trackon.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

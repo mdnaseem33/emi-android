@@ -7,36 +7,36 @@
 
     <fragment
         android:id="@+id/retailer"
-        android:name="com.emitrackon.emi_trackon.dashboard.home.retailer.RetailerFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.home.retailer.RetailerFragment"
         android:label="Retailor"
         tools:layout="@layout/fragment_retailor" />
 
     <fragment
         android:id="@+id/home"
-        android:name="com.emitrackon.emi_trackon.dashboard.home.retailer.RetailerFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.home.retailer.RetailerFragment"
         android:label="Retailer"
         tools:layout="@layout/fragment_retailor" />
     <fragment
         android:id="@+id/people"
-        android:name="com.emitrackon.emi_trackon.dashboard.people.user.UserFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.people.user.UserFragment"
         android:label="People" />
 
     <fragment
         android:id="@+id/user"
-        android:name="com.emitrackon.emi_trackon.dashboard.people.user.UserFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.people.user.UserFragment"
         android:label="User" />
     <fragment
         android:id="@+id/qr"
-        android:name="com.emitrackon.emi_trackon.dashboard.qr_code.QrFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.qr_code.QrFragment"
         android:label="Qr" />
     <fragment
         android:id="@+id/setting"
-        android:name="com.emitrackon.emi_trackon.dashboard.settings.SettingFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.settings.SettingFragment"
         android:label="Setting" />
 
     <fragment
         android:id="@+id/distributor"
-        android:name="com.emitrackon.emi_trackon.dashboard.home.distributor.DistributorFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.home.distributor.DistributorFragment"
         android:label="Distributor" />
 
     <action
@@ -51,7 +51,7 @@
         app:popUpToInclusive="true" />
     <fragment
         android:id="@+id/people_retailer"
-        android:name="com.emitrackon.emi_trackon.dashboard.people.retailer.RetailerListFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.people.retailer.RetailerListFragment"
         android:label="fragment_retailer_list"
         tools:layout="@layout/fragment_retailer_list" />
     <action
@@ -62,11 +62,11 @@
 
     <fragment
         android:id="@+id/retailerSettingFragment"
-        android:name="com.emitrackon.emi_trackon.dashboard.settings.retail.RetailerSettingFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.settings.retail.RetailerSettingFragment"
         android:label="RetailerSettingFragment" />
     <fragment
         android:id="@+id/distributerSettingFragment"
-        android:name="com.emitrackon.emi_trackon.dashboard.settings.distributor.DistributerSettingFragment"
+        android:name="com.martvalley.emi_trackon.dashboard.settings.distributor.DistributerSettingFragment"
         android:label="DistributerSettingFragment" />
 
 
